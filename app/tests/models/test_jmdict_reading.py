@@ -45,4 +45,3 @@ class JMdictReadingTestCase(TestCase):
         self.assertEqual(nReading.restrictions, cReading.restrictions)
         self.assertEqual(nReading.information, cReading.information)
         self.assertEqual(nReading.priorities, cReading.priorities)
-

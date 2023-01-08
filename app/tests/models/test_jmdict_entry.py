@@ -21,7 +21,3 @@ class JMdictEntryTestCase(TestCase):
 
         self.assertNotEqual(nEntry, cEntry)
         self.assertEqual(nEntry, self.oEntry)
-
-            
-            
-        

@@ -10,6 +10,7 @@ class JMdictSenseTestCase(TestCase):
 
     def test_created(self):
         nSense = models.JMdictSense.objects.get(id = self.oSense.id)
+
         self.assertTrue(nSense)
         # self.assertEqual(sense.xreferences, '')
         # self.assertEqual(sense.antonyms, '')

@@ -2,6 +2,9 @@
 
 import os
 
+from app import models
+
+
 PATH = 'resources/'
 INPUT = 'JMdict_e'
 
