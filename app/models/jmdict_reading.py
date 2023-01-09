@@ -6,8 +6,8 @@ class JMdictReading(models.Model):
 
     element = models.TextField(blank = False)
     no_kanji = models.BooleanField(blank = False, null = False)
-    restrictions = models.TextField(blank = True)
-    information = models.TextField(blank = True)
+    restrictions = models.TextField(blank = True, null = True)
+    information = models.TextField(blank = True, null = True)
     priorities = ArrayField(models.CharField(blank = True, max_length = 8), size = 8)
 
     def __str__(self):

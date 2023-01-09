@@ -5,11 +5,12 @@ class JMdictKanji(models.Model):
     entry = models.ForeignKey('JMdictEntry', on_delete = models.CASCADE)
 
     element = models.TextField(blank = False)
-    information = models.TextField(blank = True)
+    information = models.TextField(blank = True, null = True)
     priorities = ArrayField(models.CharField(blank = True, max_length = 8), size = 8)
 
     def __str__(self):
         return "{} {} {}".format(
+            self.entry.ent_seq,
             self.element,
             self.information,
             self.priorities,
