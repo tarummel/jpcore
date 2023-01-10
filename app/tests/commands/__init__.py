@@ -1,0 +1,1 @@
+from .test_seed_jmdict import SeedJMdictCommandTestCase
