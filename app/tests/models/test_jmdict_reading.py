@@ -5,21 +5,23 @@ class JMdictReadingTestCase(TestCase):
     oEntry, oReading = None, None
 
     def setUp(self):
-        self.oEntry = models.JMdictEntry.objects.create(ent_seq = 1000010)
-        self.oReading = models.JMdictReading.objects.create(
+        self.oEntry = models.JMdictEntry(ent_seq = 1000010)
+        self.oReading = models.JMdictReading(
             id = 3,
             entry = self.oEntry,
-            element = '明白', 
+            content = '明白', 
             no_kanji = True,
             restrictions = '彼',
             information = '&ok;', 
             priorities = ['ichi1'],
         )
+        self.oEntry.save()
+        self.oReading.save()
 
-    def test_create_and_update(self):
+    def testCreateAndUpdate(self):
         cReading = models.JMdictReading.objects.get(id = self.oReading.id)
 
-        self.assertEqual(cReading.element, self.oReading.element)
+        self.assertEqual(cReading.content, self.oReading.content)
         self.assertEqual(cReading.no_kanji, self.oReading.no_kanji)
         self.assertEqual(cReading.restrictions, self.oReading.restrictions)
         self.assertEqual(cReading.information, self.oReading.information)
@@ -30,7 +32,7 @@ class JMdictReadingTestCase(TestCase):
         self.assertTrue(cEntry)
         self.assertEqual(cEntry.ent_seq, self.oEntry.ent_seq)
 
-        cReading.element = ''
+        cReading.content = ''
         cReading.no_kanji = False
         cReading.restrictions = ''
         cReading.information = ''
@@ -40,7 +42,7 @@ class JMdictReadingTestCase(TestCase):
         nReading = models.JMdictReading.objects.get(id = cReading.id)
 
         self.assertTrue(nReading)
-        self.assertEqual(nReading.element, cReading.element)
+        self.assertEqual(nReading.content, cReading.content)
         self.assertEqual(nReading.no_kanji, cReading.no_kanji)
         self.assertEqual(nReading.restrictions, cReading.restrictions)
         self.assertEqual(nReading.information, cReading.information)

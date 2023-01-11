@@ -2,7 +2,7 @@
 
 import time
 from xml.etree import ElementTree as ET
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 
 from app import models
 
@@ -26,74 +26,97 @@ class Command(BaseCommand):
         models.JMdictReading.objects.all().delete()
         models.JMdictSense.objects.all().delete()
         models.JMdictGlossary.objects.all().delete()
-        # models.JMdictSource.objects.all().delete()
-        # models.JMdictExample.objects.all().delete()
+        models.JMdictSource.objects.all().delete()
 
     # for special char encoding like keb and reb
-    def getKanjiTextFromXml(self, content, tag):
+    def getKanjiTextFromXml(self, xml, tag):
         element = ''
-        contentStr = ET.tostring(content, encoding = 'unicode', method = 'xml')
+        xmlStr = ET.tostring(xml, encoding = 'unicode', method = 'xml')
         try:
-            i = contentStr.index(f'<{tag}>') + len(tag) + 2
-            j = contentStr.index(f'</{tag}>', i + 1)
-            element = contentStr[i:j]
+            i = xmlStr.index(f'<{tag}>') + len(tag) + 2
+            j = xmlStr.index(f'</{tag}>', i + 1)
+            element = xmlStr[i:j]
         except ValueError:
             # print('ValueError: substring not found')
             pass
 
         return element
 
-    def getTextFromXml(self, content, tag):
-        element = content.find(tag)
+    def getTextFromXml(self, xml, tag):
+        element = xml.find(tag)
         if element:
             return element.text
         return ''
 
-    def getListFromXml(self, content, tag):
+    def getListFromXml(self, xml, tag):
         result = []
-        elements = content.findall(tag)
+        elements = xml.findall(tag)
         for e in elements:
             result.append(e.text)
         return result
 
-    def buildAndSaveEntry(self, content):
-        entry = models.JMdictEntry(ent_seq = int(content.find('ent_seq').text))
+    def buildAndSaveEntry(self, xml):
+        entry = models.JMdictEntry(ent_seq = int(xml.find('ent_seq').text))
         entry.save()
         return entry
 
-    def buildAndSaveKanji(self, entry, content):
+    def buildAndSaveKanji(self, entry, xml):
         kanji = models.JMdictKanji(
             entry = entry, 
-            element = self.getKanjiTextFromXml(content, 'keb'), 
-            information = self.getKanjiTextFromXml(content, 'ke_inf'), 
-            priorities = self.getListFromXml(content, 'ke_pri')
+            content = self.getKanjiTextFromXml(xml, 'keb'), 
+            information = self.getKanjiTextFromXml(xml, 'ke_inf'), 
+            priorities = self.getListFromXml(xml, 'ke_pri')
         )
         kanji.save()
         
-    def buildAndSaveReading(self, entry, content):
+    def buildAndSaveReading(self, entry, xml):
         reading = models.JMdictReading(
             entry = entry, 
-            element = self.getKanjiTextFromXml(content, 'reb'), 
-            no_kanji = True if content.find('re_nokanji') else False,
-            restrictions = self.getKanjiTextFromXml(content, 're_restr'),
-            information = self.getKanjiTextFromXml(content, 're_inf'),
-            priorities = self.getListFromXml(content, 're_pri')
+            content = self.getKanjiTextFromXml(xml, 'reb'), 
+            no_kanji = True if xml.find('re_nokanji') else False,
+            restrictions = self.getKanjiTextFromXml(xml, 're_restr'),
+            information = self.getKanjiTextFromXml(xml, 're_inf'),
+            priorities = self.getListFromXml(xml, 're_pri')
         )
         reading.save()
 
-    def buildAndSaveSense(self, entry, content):
-        sense = models.JMdictSense(entry = entry)
+    def buildAndSaveSense(self, entry, xml):
+        sense = models.JMdictSense(
+            entry = entry,
+            xreferences = self.getListFromXml(xml, 'xref'),
+            antonyms = self.getListFromXml(xml, 'ant'),
+            parts_of_speech = self.getListFromXml(xml, 'pos'),
+            fields = self.getListFromXml(xml, 'field'),
+            misc = self.getListFromXml(xml, 'misc'), 
+            dialects = self.getListFromXml(xml, 'dial'),
+            information = self.getKanjiTextFromXml(xml, 's_inf')
+        )
         sense.save()
         return sense
 
     def buildAndSaveGlossary(self, sense, gloss):
-        glossary = models.JMdictGlossary(sense = sense, gloss = gloss)
+        # TODO: getAttributes function
+        glossary = models.JMdictGlossary(
+            sense = sense, 
+            gloss = gloss,
+            # language = ,
+            # type = 
+        )
         glossary.save()
 
+    def buildAndSaveSource(self, sense, content):
+        sense = models.JMdictSource(
+            sense = sense,
+            content = content,
+            # language = ,
+            # partial = ,
+            # waseieigo = 
+        )
+
     def handle(self, *args, **options):
-        startTime = time.time()
-        stats = [0, 0, 0, 0, 0]
+        stats = [0, 0, 0, 0, 0, 0]
         printPercentages = [1, 11, 21, 31, 41, 51, 61, 71, 81, 91, 100]
+        startTime = time.time()
         
         tree = ET.parse(f'{PATH}')
         xmlRoot = tree.getroot()
@@ -118,12 +141,16 @@ class Command(BaseCommand):
                     self.buildAndSaveGlossary(senseKey, jmGloss)
                     stats[4] += 1
 
-            percentComplete = 100 * float(stats[4]) / 395043
-            if percentComplete in printPercentages:
-                print(f'{str(percentComplete)}%')
-            
+                for jmSource in self.getListFromXml(jmSense, 'lsource'):
+                    self.buildAndSaveSource(senseKey, jmSource)
+                    stats[5] += 1
 
+
+            percentComplete = round(100 * float(stats[4]) / 395043)
+            if percentComplete in printPercentages:
+                printPercentages.remove(percentComplete)
+                print(f'{str(percentComplete)}%')
 
         execTime = (time.time() - startTime)
         print(f'Execution time (seconds):{str(execTime)}')
-        print(f'Entry:{stats[0]}, Kanji:{stats[1]}, Read:{stats[2]}, Sense:{stats[3]}, Gloss:{stats[4]}')
+        print(f'Entry:{stats[0]}, Kanji:{stats[1]}, Read:{stats[2]}, Sense:{stats[3]}, Gloss:{stats[4]}, Sour:{stats[5]}')

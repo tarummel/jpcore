@@ -1,0 +1,7 @@
+./manage.py dbshell -- -c 'DROP TABLE app_jmdictentry CASCADE' ;
+./manage.py dbshell -- -c 'DROP TABLE app_jmdictkanji CASCADE' ;
+./manage.py dbshell -- -c 'DROP TABLE app_jmdictreading CASCADE' ;
+./manage.py dbshell -- -c 'DROP TABLE app_jmdictsense CASCADE' ;
+./manage.py dbshell -- -c 'DROP TABLE app_jmdictglossary CASCADE' ;
+./manage.py dbshell -- -c 'DROP TABLE app_jmdictsource CASCADE' ;
+./manage.py dbshell -- -c 'DROP TABLE app_kanjiradical CASCADE'

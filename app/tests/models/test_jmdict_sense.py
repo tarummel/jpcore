@@ -5,10 +5,21 @@ class JMdictSenseTestCase(TestCase):
     oEntry, oSense = None, None
 
     def setUp(self):
-        self.oEntry = models.JMdictEntry.objects.create(ent_seq = 1000020)
-        self.oSense = models.JMdictSense.objects.create(id = 5, entry = self.oEntry)
+        self.oEntry = models.JMdictEntry(ent_seq = 1000020)
+        self.oSense = models.JMdictSense(
+            id = 5, 
+            entry = self.oEntry
+            xreferences = [],
+            antonyms = [],
+            fields = [],
+            misc = [],
+            dialects = [],
+            information = ''
+        )
+        self.oEntry.save()
+        self.oSense.save()
 
-    def test_created(self):
+    def testCreateAndUpdate(self):
         nSense = models.JMdictSense.objects.get(id = self.oSense.id)
 
         self.assertTrue(nSense)
