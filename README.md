@@ -5,4 +5,3 @@ Useful Django commands
 ```./manage.py migrate```
 ```./manage.py migrate --fake app zero``` 
 ```./manage.py dbshell```
-```./manage.py ```
