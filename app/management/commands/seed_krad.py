@@ -52,7 +52,7 @@ class Command(BaseCommand):
                     savedRadical.save()
                     stats[0] += 1
 
-                    # easy lookup for calculating kanji stroke counts later
+                    # lookup for calculating kanji stroke counts later
                     radStrokes[savedRadical.radical] = savedRadical.strokes
                     
 
@@ -69,12 +69,16 @@ class Command(BaseCommand):
         if len(allRad) != stats[0]:
             sys.exit('Mismatched radical count between db and radinfo')
 
+        missing = set()
         with open(f'{KRAD_PATH}') as f:
             for line in f:
-                kanji, radicals = self.kradSplit(line)
+                k, radicals = self.kradSplit(line)
                 for r in radicals:
                     if r not in radStrokes:
-                        sys.exit(f'unlisted radical found in krad {r}')
+                        missing.add(r)
+        
+        if missing:
+            sys.exit(f'unlisted radical(s) found in krad {missing}')
 
 
     def loadKrad(self):

@@ -1,9 +1,18 @@
-./manage.py dbshell -- -c 'DROP TABLE app_jmdictentry CASCADE' ;
-./manage.py dbshell -- -c 'DROP TABLE app_jmdictkanji CASCADE' ;
-./manage.py dbshell -- -c 'DROP TABLE app_jmdictreading CASCADE' ;
-./manage.py dbshell -- -c 'DROP TABLE app_jmdictsense CASCADE' ;
-./manage.py dbshell -- -c 'DROP TABLE app_jmdictglossary CASCADE' ;
-./manage.py dbshell -- -c 'DROP TABLE app_jmdictsource CASCADE' ;
-./manage.py dbshell -- -c 'DROP TABLE app_kanji CASCADE' ;
-./manage.py dbshell -- -c 'DROP TABLE app_radical CASCADE' ;
-./manage.py dbshell -- -c 'DROP TABLE app_kanji_radicals' ;
+#!/bin/bash
+
+dbs=$(psql -d jpcore -c "\d" | grep "app_" | awk '{print $3}')
+for db in $dbs
+do
+  echo $db
+  psql -d jpscore -c "DROP TABLE ${db} CASCADE"
+done
+
+# ./manage.py dbshell -- -c 'DROP TABLE app_jmdictentry CASCADE' ;
+# ./manage.py dbshell -- -c 'DROP TABLE app_jmdictkanji CASCADE' ;
+# ./manage.py dbshell -- -c 'DROP TABLE app_jmdictreading CASCADE' ;
+# ./manage.py dbshell -- -c 'DROP TABLE app_jmdictsense CASCADE' ;
+# ./manage.py dbshell -- -c 'DROP TABLE app_jmdictglossary CASCADE' ;
+# ./manage.py dbshell -- -c 'DROP TABLE app_jmdictsource CASCADE' ;
+# ./manage.py dbshell -- -c 'DROP TABLE app_kanji CASCADE' ;
+# ./manage.py dbshell -- -c 'DROP TABLE app_radical CASCADE' ;
+# ./manage.py dbshell -- -c 'DROP TABLE app_kanji_radicals' ;
