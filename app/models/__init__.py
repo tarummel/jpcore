@@ -9,4 +9,5 @@ from .jmdict_glossary import JMdictGlossary
 from .jmdict_source import JMdictSource
 
 # --- Krad/Radk models ---
-from .kanji_radical import KanjiRadical
+from .radical import Radical
+from .kanji import Kanji
