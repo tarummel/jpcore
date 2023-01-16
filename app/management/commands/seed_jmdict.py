@@ -32,7 +32,7 @@ class Command(BaseCommand):
         pass
 
     # for special char encoding like keb and reb
-    def getKanjiTextFromXml(self, xml, tag):
+    def getKanjiText(self, xml, tag):
         element = ''
         xmlStr = ET.tostring(xml, encoding = 'unicode', method = 'xml')
         try:
@@ -45,13 +45,13 @@ class Command(BaseCommand):
 
         return element
 
-    def getTextFromXml(self, xml, tag):
+    def getText(self, xml, tag):
         element = xml.find(tag)
         if element:
             return element.text
         return ''
 
-    def getListFromXml(self, xml, tag):
+    def getList(self, xml, tag):
         result = []
         elements = xml.findall(tag)
         for e in elements:
@@ -66,33 +66,33 @@ class Command(BaseCommand):
     def buildAndSaveKanji(self, entry, xml):
         kanji = models.JMdictKanji(
             entry = entry, 
-            content = self.getKanjiTextFromXml(xml, 'keb'), 
-            information = self.getKanjiTextFromXml(xml, 'ke_inf'), 
-            priorities = self.getListFromXml(xml, 'ke_pri')
+            content = self.getKanjiText(xml, 'keb'), 
+            information = self.getKanjiText(xml, 'ke_inf'), 
+            priorities = self.getList(xml, 'ke_pri')
         )
         kanji.save()
         
     def buildAndSaveReading(self, entry, xml):
         reading = models.JMdictReading(
             entry = entry, 
-            content = self.getKanjiTextFromXml(xml, 'reb'), 
+            content = self.getKanjiText(xml, 'reb'), 
             no_kanji = True if xml.find('re_nokanji') else False,
-            restrictions = self.getKanjiTextFromXml(xml, 're_restr'),
-            information = self.getKanjiTextFromXml(xml, 're_inf'),
-            priorities = self.getListFromXml(xml, 're_pri')
+            restrictions = self.getKanjiText(xml, 're_restr'),
+            information = self.getKanjiText(xml, 're_inf'),
+            priorities = self.getList(xml, 're_pri')
         )
         reading.save()
 
     def buildAndSaveSense(self, entry, xml):
         sense = models.JMdictSense(
             entry = entry,
-            xreferences = self.getListFromXml(xml, 'xref'),
-            antonyms = self.getListFromXml(xml, 'ant'),
-            parts_of_speech = self.getListFromXml(xml, 'pos'),
-            fields = self.getListFromXml(xml, 'field'),
-            misc = self.getListFromXml(xml, 'misc'), 
-            dialects = self.getListFromXml(xml, 'dial'),
-            information = self.getKanjiTextFromXml(xml, 's_inf')
+            xreferences = self.getList(xml, 'xref'),
+            antonyms = self.getList(xml, 'ant'),
+            parts_of_speech = self.getList(xml, 'pos'),
+            fields = self.getList(xml, 'field'),
+            misc = self.getList(xml, 'misc'), 
+            dialects = self.getList(xml, 'dial'),
+            information = self.getKanjiText(xml, 's_inf')
         )
         sense.save()
         return sense
@@ -140,11 +140,11 @@ class Command(BaseCommand):
                 senseKey = self.buildAndSaveSense(entryKey, jmSense)
                 stats[3] += 1
 
-                for jmGloss in self.getListFromXml(jmSense, 'gloss'):
+                for jmGloss in self.getList(jmSense, 'gloss'):
                     self.buildAndSaveGlossary(senseKey, jmGloss)
                     stats[4] += 1
 
-                for jmSource in self.getListFromXml(jmSense, 'lsource'):
+                for jmSource in self.getList(jmSense, 'lsource'):
                     self.buildAndSaveSource(senseKey, jmSource)
                     stats[5] += 1
 
