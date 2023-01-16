@@ -11,6 +11,7 @@ class JMdictGlossaryTestCase(TestCase):
             entry = self.oEntry,
             xreferences = [],
             antonyms = [],
+            parts_of_speech = [],
             fields = [],
             misc = [],
             dialects = [],
@@ -29,15 +30,15 @@ class JMdictGlossaryTestCase(TestCase):
 
     def testCreateAndUpdate(self):
         cGloss = models.JMdictGlossary.objects.get(id = self.oGloss.id)
-        cSense = models.JMdictSense.objects.get(id = self.oSense)
+        cSense = models.JMdictSense.objects.get(id = self.oSense.id)
         cEntry = models.JMdictEntry.objects.get(ent_seq = self.oEntry.ent_seq)
 
         self.assertEqual(cSense, self.oSense)
         self.assertEqual(cEntry, self.oEntry)
 
         self.assertEqual(cGloss.gloss, self.oGloss.gloss)
-        self.assertEqual(cGloss.language, 'fre')
-        self.assertEqual(cGloss.type, 'expl')
+        self.assertEqual(cGloss.language, self.oGloss.language)
+        self.assertEqual(cGloss.type, self.oGloss.type)
 
         cGloss.gloss = 'plastic wrap'
         cGloss.language = 'ger'

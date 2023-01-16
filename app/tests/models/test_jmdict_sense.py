@@ -8,9 +8,10 @@ class JMdictSenseTestCase(TestCase):
         self.oEntry = models.JMdictEntry(ent_seq = 1000020)
         self.oSense = models.JMdictSense(
             id = 5, 
-            entry = self.oEntry
+            entry = self.oEntry,
             xreferences = [],
             antonyms = [],
+            parts_of_speech = [],
             fields = [],
             misc = [],
             dialects = [],

@@ -7,10 +7,11 @@ class JMdictSourceTestCase(TestCase):
     def setUp(self):
         self.oEntry = models.JMdictEntry(ent_seq = 1000500)
         self.oSense = models.JMdictSense(
-            id = 100, 
+            id = 100,
             entry = self.oEntry,
             xreferences = [],
             antonyms = [],
+            parts_of_speech = [],
             fields = [],
             misc = [],
             dialects = [],
@@ -18,6 +19,7 @@ class JMdictSourceTestCase(TestCase):
         )
         self.oSource = models.JMdictSource(
             id = 49,
+            sense = self.oSense,
             content = 'bēngzi',
             language = 'chi',
             partial = False,
@@ -47,7 +49,7 @@ class JMdictSourceTestCase(TestCase):
         cSource.waseieigo = True
         cSource.save()
 
-        nSource = models.JMdictSource.objects.get(id = self.oSource)
+        nSource = models.JMdictSource.objects.get(id = self.oSource.id)
 
         self.assertEqual(nSource.id, cSource.id)
         self.assertEqual(nSource.content, cSource.content)

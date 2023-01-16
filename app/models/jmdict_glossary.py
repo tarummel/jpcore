@@ -14,5 +14,3 @@ class JMdictGlossary(models.Model):
             lang: {self.language} \
             type: {self.type} \
         '
-            
-        

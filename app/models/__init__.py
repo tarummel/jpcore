@@ -1,5 +1,3 @@
-# Note: all models must be declared here
-
 # --- JMdict models ---
 from .jmdict_entry import JMdictEntry
 from .jmdict_kanji import JMdictKanji

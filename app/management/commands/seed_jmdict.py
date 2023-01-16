@@ -28,6 +28,9 @@ class Command(BaseCommand):
         models.JMdictGlossary.objects.all().delete()
         models.JMdictSource.objects.all().delete()
 
+    def getAttributes(self, xml, tag):
+        pass
+
     # for special char encoding like keb and reb
     def getKanjiTextFromXml(self, xml, tag):
         element = ''

@@ -17,7 +17,6 @@ class JMdictKanjiTestCase(TestCase):
         self.oKanji.save()
 
     def testCreateAndUpdate(self):
-        # Create
         cKanji = models.JMdictKanji.objects.get(id = self.oKanji.id)
 
         self.assertTrue(cKanji)
@@ -31,7 +30,6 @@ class JMdictKanjiTestCase(TestCase):
         self.assertTrue(cEntry)
         self.assertEqual(cEntry.ent_seq, self.oEntry.ent_seq)
 
-        # Update
         cKanji.content = '〃'
         cKanji.information = '&rK;'
         cKanji.priorities = ['news1', 'ichi1']

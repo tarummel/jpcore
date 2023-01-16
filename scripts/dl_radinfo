@@ -1,2 +1,5 @@
-# downloads my radinfo file from Google Sheets used with kradfile
+#!/bin/bash
+
+# downloads the radinfo file from Google Sheets used with kradfile
+rm ./resources/radinfo.tsv
 curl -L "https://docs.google.com/spreadsheets/d/1B5KKZIZXNcE79-kVO-8ujA9M6h0kRGG_-B3rEMfMy98/export?format=tsv&gid=0" > ./resources/radinfo.tsv

@@ -20,10 +20,7 @@ parts/
 sdist/
 var/
 wheels/
-<<<<<<< HEAD
-=======
 pip-wheel-metadata/
->>>>>>> 962d39df6b1142a2ad74480cb5d5cc13c101bce2
 share/python-wheels/
 *.egg-info/
 .installed.cfg
@@ -53,10 +50,6 @@ coverage.xml
 *.py,cover
 .hypothesis/
 .pytest_cache/
-<<<<<<< HEAD
-cover/
-=======
->>>>>>> 962d39df6b1142a2ad74480cb5d5cc13c101bce2
 
 # Translations
 *.mo

@@ -6,7 +6,7 @@ class JMdictKanji(models.Model):
 
     content = models.TextField(blank = True)
     information = models.TextField(blank = True)
-    priorities = ArrayField(models.TextField(blank = True))
+    priorities = ArrayField(models.TextField(), blank = True)
 
     def __str__(self):
         return f' \

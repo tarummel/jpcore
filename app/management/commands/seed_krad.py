@@ -10,8 +10,8 @@ from app import models
 RADINFO_PATH = './resources/radinfo.tsv'
 KRAD_PATH = './resources/kradfile.txt'
 
-radStrokes = {}
-stats = [0, 0]
+radDict = {}
+stats = [0, 0, 0, 0]
 
 class Command(BaseCommand):
     help = 'Seed Krad Command'
@@ -23,14 +23,15 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         startTime = time.time()
 
-        self.loadRadicalInfo()
-        self.verifyKrad()
-        # self.loadKrad()
-        # self.postUpdate()
+        self.loadRadinfo()
+        self.kradPrecheck()
+        self.loadKrad()
 
-        execTime = (time.time() - startTime)
+        stats[0] = (time.time() - startTime)
 
-    def loadRadicalInfo(self):
+        self.printStats()
+
+    def loadRadinfo(self):
         # format [No \t Radical \t Strokes \t Meaning \t Reading \t Position \t Frequency \t Notes]
         with open(f'{RADINFO_PATH}') as f:
             # skip headers
@@ -50,20 +51,17 @@ class Command(BaseCommand):
                         notes = e[7]
                     )
                     savedRadical.save()
-                    stats[0] += 1
+                    stats[1] += 1
 
                     # lookup for calculating kanji stroke counts later
-                    radStrokes[savedRadical.radical] = savedRadical.strokes
-                    
-
-        print(f'Radicals: {stats[0]}')
+                    radDict[savedRadical.radical] = savedRadical
 
     def kradSplit(self, line):
         # format [k : r1 r2 r3]
         split = line.strip().split(' ')
         return split[0], split[2:]
 
-    def verifyKrad(self):
+    def kradPrecheck(self):
         allRad = models.Radical.objects.all().values('radical', 'strokes')
 
         if len(allRad) != stats[0]:
@@ -74,16 +72,12 @@ class Command(BaseCommand):
             for line in f:
                 k, radicals = self.kradSplit(line)
                 for r in radicals:
-                    if r not in radStrokes:
+                    if r not in radDict:
                         missing.add(r)
-        
         if missing:
             sys.exit(f'unlisted radical(s) found in krad {missing}')
 
-
     def loadKrad(self):
-        radDict = {}
-
         with open(f'{KRAD_PATH}') as f:
             # format [k : r1 r2 r3]
             for line in f:
@@ -100,11 +94,10 @@ class Command(BaseCommand):
 
                 # second pass for adding radicals to Kanji
                 for r in radicals:
-                    savedKanji.add(radDict[r])
+                    savedKanji.radicals.add(radDict[r])
+                    stats[3] += 1
+                stats[2] += 1
 
-                stats[1] += 1
-
-    # def printStats(self):
-    #     print(f'Execution time (seconds):{str(execTime)}')
-    #     print(f'Kanji: {str(kanjiCount)}, radicals: {str(radicalCount)}')
-    #     pass
+    def printStats(self):
+        print(f'Execution time (seconds):{str(stats[0])}')
+        print(f'Kanji: {str(stats[2])}, radicals: {str(stats[1])}, rad/kanji keys: {str(stats[3])}')
