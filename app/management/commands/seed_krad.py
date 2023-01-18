@@ -39,7 +39,7 @@ class Command(BaseCommand):
 
             for line in f:
                 e = line.split('\t')
-                if e[0] != '':
+                if e[1] != '':
                     savedRadical = models.Radical(
                         number = int(e[0]), 
                         radical = e[1],
