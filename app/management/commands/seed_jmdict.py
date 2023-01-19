@@ -5,7 +5,7 @@ from app import models
 from app.management.helpers import SeedJMdictHelper as helper
 
 # Entry:198729, Kanji:204164, Read:238386, Sense:228960, Gloss:395043, Sour:5581
-# Execution time (seconds):2270.001276254654
+# Execution time (seconds):906.6395170688629
 
 class Command(BaseCommand):
     help = 'Seed JMdict Command'

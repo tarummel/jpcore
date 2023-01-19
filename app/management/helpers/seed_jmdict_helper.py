@@ -16,9 +16,7 @@ stats = [0, 0, 0, 0, 0, 0]
 class SeedJMdictHelper():
     # for gloss and lsource only
     def getTextWithAttributes(self, xml):
-        element = ''
-        if xml and xml.text:
-            element = xml.text
+        text = xml.text if xml.text else ''
 
         attributes = {}
         for a in xml.attrib:
@@ -26,7 +24,7 @@ class SeedJMdictHelper():
             attrValue = xml.attrib[a]
             attributes[attrName] = attrValue
 
-        return element, attributes
+        return text, attributes
 
     # TODO: find a better way
     def getText(self, xml, tag):
@@ -68,7 +66,7 @@ class SeedJMdictHelper():
         reading = models.JMdictReading(
             entry = entryObj, 
             content = self.getText(xml, 'reb'), 
-            no_kanji = True if xml.find('re_nokanji') else False,
+            no_kanji = True if xml.find('re_nokanji') != None else False,
             restrictions = self.getText(xml, 're_restr'),
             information = self.getText(xml, 're_inf'),
             priorities = self.getList(xml, 're_pri')
