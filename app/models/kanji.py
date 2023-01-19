@@ -6,8 +6,4 @@ class Kanji(models.Model):
     strokes = models.IntegerField() # sum of radicals
 
     def __str__(self):
-        return f' \
-            kanji: {self.kanji} \
-            radicals: {self.radicals} \
-            strokes: {self.strokes} \
-        '
+        return f'kanji: {self.kanji}, rads: {self.radicals}, strokes: {self.strokes}'

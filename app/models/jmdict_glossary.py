@@ -8,9 +8,4 @@ class JMdictGlossary(models.Model):
     type = models.TextField(blank = True)
 
     def __str__(self):
-        return f' \
-            entry: {self.sense.entry.ent_seq,}, \
-            gloss: {self.gloss} \
-            lang: {self.language} \
-            type: {self.type} \
-        '
+        return f'ent: {self.sense.entry.ent_seq,}, glo: {self.gloss}, lang: {self.language}, type: {self.type}'

@@ -11,12 +11,4 @@ class Radical(models.Model):
     notes = models.TextField(blank = True)
 
     def __str__(self):
-        return f' \
-            kan: {self.number} \
-            rad: {self.radical} \
-            st#: {self.strokes} \
-            mea: {self.meaning} \
-            rea: {self.reading} \
-            pos: {self.position} \
-            note: {self.notes} \
-        '
+        return f'No: {self.number}, rad: {self.radical}, stks: {self.strokes}, mean: {self.meaning}, read: {self.reading}, pos: {self.position}, note: {self.notes}'

@@ -13,12 +13,4 @@ class JMdictSense(models.Model):
     information = models.TextField(blank = True)
 
     def __str__(self):
-        return f' \
-            entry: {self.entry.ent_seq} \
-            xref: {self.xreferences} \
-            ants: {self.antonyms} \
-            fields: {self.fields} \
-            misc: {self.misc} \
-            dials: {self.dialects} \
-            info: {self.information} \
-        '
+        return f'ent: {self.entry.ent_seq}, xref: {self.xreferences}, ant: {self.antonyms}, fie: {self.fields}, misc: {self.misc}, dia: {self.dialects}, inf: {self.information}'

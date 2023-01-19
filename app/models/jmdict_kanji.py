@@ -9,9 +9,4 @@ class JMdictKanji(models.Model):
     priorities = ArrayField(models.TextField(), blank = True)
 
     def __str__(self):
-        return f' \
-            entry: {self.entry.ent_seq}, \
-            elem: {self.content}, \
-            info: {self.information}, \
-            prio: {self.priorities} \
-        '
+        return f'ent: {self.entry.ent_seq}, con: {self.content}, inf: {self.information}, pri: {self.priorities}'
