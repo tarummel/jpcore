@@ -1,7 +1,7 @@
 ## JPCore
 
-Migrate database:
-```python manage.py migrate```
-
-Run server:
-```sh run```
+Useful Django commands
+```./manage.py makemigrations```
+```./manage.py migrate```
+```./manage.py migrate --fake app zero``` 
+```./manage.py dbshell```

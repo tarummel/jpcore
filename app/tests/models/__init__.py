@@ -1,0 +1,6 @@
+from .test_jmdict_entry import JMdictEntryTestCase
+from .test_jmdict_kanji import JMdictKanjiTestCase
+from .test_jmdict_reading import JMdictReadingTestCase
+from .test_jmdict_sense import JMdictSenseTestCase
+from .test_jmdict_glossary import JMdictGlossaryTestCase
+from .test_jmdict_source import JMdictSourceTestCase
