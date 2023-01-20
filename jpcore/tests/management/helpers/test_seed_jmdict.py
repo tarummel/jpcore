@@ -241,7 +241,7 @@ class SeedJMdictHelperTestCase(TestCase):
         source = self.helper.buildAndSaveSource(sense, xml)
         savedEntry = JMdictEntry.objects.get(ent_seq = seq)
         savedSense = JMdictSense.objects.get(id = sense.id)
-        savedSource = Source.objects.get(id = source.id)
+        savedSource = JMdictSource.objects.get(id = source.id)
 
         self.assertEqual(savedEntry.ent_seq, seq)
         self.assertEqual(savedSense.entry, savedEntry)

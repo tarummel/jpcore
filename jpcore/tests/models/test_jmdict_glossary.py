@@ -28,7 +28,7 @@ class JMdictGlossaryTestCase(TestCase):
         self.oSense.save()
         self.oGloss.save()
 
-    def testCreateAndUpdate(self):
+    def test_create_update(self):
         cGloss = JMdictGlossary.objects.get(id = self.oGloss.id)
         cSense = JMdictSense.objects.get(id = self.oSense.id)
         cEntry = JMdictEntry.objects.get(ent_seq = self.oEntry.ent_seq)

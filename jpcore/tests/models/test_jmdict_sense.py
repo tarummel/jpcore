@@ -20,7 +20,7 @@ class JMdictSenseTestCase(TestCase):
         self.oEntry.save()
         self.oSense.save()
 
-    def testCreateAndUpdate(self):
+    def test_create_update(self):
         cSense = JMdictSense.objects.get(id = self.oSense.id)
 
         self.assertTrue(cSense)

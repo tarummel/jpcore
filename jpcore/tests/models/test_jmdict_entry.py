@@ -8,11 +8,11 @@ class JMdictEntryTestCase(TestCase):
         self.oEntry = JMdictEntry.objects.create(ent_seq = 1000000)
         self.oEntry.save()
 
-    def testCreate(self):
+    def test_create(self):
         cEntry = JMdictEntry.objects.get(ent_seq = self.oEntry.ent_seq)
         self.assertEqual(cEntry, self.oEntry)
 
-    def testUneditable(self):
+    def test_uneditable(self):
         cEntry = JMdictEntry.objects.get(ent_seq = self.oEntry.ent_seq)
 
         cEntry.ent_seq = 99999999

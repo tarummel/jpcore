@@ -18,7 +18,7 @@ class JMdictReadingTestCase(TestCase):
         self.oEntry.save()
         self.oReading.save()
 
-    def testCreateAndUpdate(self):
+    def test_create_update(self):
         cReading = JMdictReading.objects.get(id = self.oReading.id)
 
         self.assertEqual(cReading.content, self.oReading.content)

@@ -29,7 +29,7 @@ class JMdictSourceTestCase(TestCase):
         self.oSense.save()
         self.oSource.save()
 
-    def testCreateAndUpdate(self):
+    def test_create_update(self):
         cSource = JMdictSource.objects.get(id = self.oSource.id)
         cSense = JMdictSense.objects.get(id = self.oSense.id)
         cEntry = JMdictEntry.objects.get(ent_seq = self.oEntry.ent_seq)

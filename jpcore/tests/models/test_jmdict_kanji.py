@@ -16,7 +16,7 @@ class JMdictKanjiTestCase(TestCase):
         self.oEntry.save()
         self.oKanji.save()
 
-    def testCreateAndUpdate(self):
+    def test_create_update(self):
         cKanji = JMdictKanji.objects.get(id = self.oKanji.id)
 
         self.assertTrue(cKanji)
