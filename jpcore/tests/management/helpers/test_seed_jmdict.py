@@ -1,7 +1,7 @@
 from django.test import TestCase
 from xml.etree import ElementTree as etree
 
-from jpcore import models
+from jpcore.models import JMdictEntry, JMdictKanji, JMdictReading, JMdictSense, JMdictGlossary, JMdictSource
 from jpcore.management.helpers import SeedJMdictHelper as helper
 
 class SeedJMdictHelperTestCase(TestCase):
@@ -117,21 +117,21 @@ class SeedJMdictHelperTestCase(TestCase):
         xml = etree.XML(f'<entry><ent_seq>{seq}</ent_seq></entry>')
 
         self.helper.buildAndSaveEntry(xml)
-        savedEntry = models.JMdictEntry.objects.get(ent_seq = seq)
+        savedEntry = JMdictEntry.objects.get(ent_seq = seq)
 
         self.assertEqual(savedEntry.ent_seq, seq)
     
     def test_build_kanji(self):
         seq = 1000000
-        entry = models.JMdictEntry(ent_seq = seq)
+        entry = JMdictEntry(ent_seq = seq)
         entry.save()
 
         keb, inf, pri = 'お凸', 'rK', ['ichi1', 'ichi2']
         xml = etree.XML(f'<k_ele><keb>{keb}</keb><ke_inf>{inf}</ke_inf><ke_pri>{pri[0]}</ke_pri><ke_pri>{pri[1]}</ke_pri></k_ele>')
 
         kanji = self.helper.buildAndSaveKanji(entry, xml)
-        savedEntry = models.JMdictEntry.objects.get(ent_seq = seq)
-        savedKanji = models.JMdictKanji.objects.get(id = kanji.id)
+        savedEntry = JMdictEntry.objects.get(ent_seq = seq)
+        savedKanji = JMdictKanji.objects.get(id = kanji.id)
 
         self.assertEqual(savedEntry.ent_seq, seq)
         self.assertEqual(savedKanji.entry, savedEntry)
@@ -141,15 +141,15 @@ class SeedJMdictHelperTestCase(TestCase):
 
     def test_build_reading(self):
         seq = 1000001
-        entry = models.JMdictEntry(ent_seq = seq)
+        entry = JMdictEntry(ent_seq = seq)
         entry.save()
 
         reb, inf, restr, pri = 'シーディープレーヤー', 'ok', 'ＣＤプレーヤー', ['spec1', 'news1']
         xml = etree.XML(f'<r_ele><reb>{reb}</reb><re_nokanji/><re_inf>{inf}</re_inf><re_restr>{restr}</re_restr><re_pri>{pri[0]}</re_pri><re_pri>{pri[1]}</re_pri></r_ele>')
 
         reading = self.helper.buildAndSaveReading(entry, xml)
-        savedEntry = models.JMdictEntry.objects.get(ent_seq = seq)
-        savedReading = models.JMdictReading.objects.get(id = reading.id)
+        savedEntry = JMdictEntry.objects.get(ent_seq = seq)
+        savedReading = JMdictReading.objects.get(id = reading.id)
 
         self.assertEqual(savedEntry.ent_seq, seq)
         self.assertEqual(savedReading.entry, savedEntry)
@@ -160,7 +160,7 @@ class SeedJMdictHelperTestCase(TestCase):
 
     def test_build_sense(self):
         seq = 1000002
-        entry = models.JMdictEntry(ent_seq = seq)
+        entry = JMdictEntry(ent_seq = seq)
         entry.save()
 
         pos = ['exp', 'unc']
@@ -173,8 +173,8 @@ class SeedJMdictHelperTestCase(TestCase):
         xml = etree.XML(f'<sense><pos>{pos[0]}</pos><pos>{pos[1]}</pos><xref>{xref[0]}</xref><xref>{xref[1]}</xref><ant>{ant[0]}</ant><ant>{ant[1]}</ant><misc>{misc[0]}</misc><misc>{misc[1]}</misc><field>{field[0]}</field><field>{field[1]}</field><dial>{dial[0]}</dial><dial>{dial[1]}</dial><s_inf>{inf}</s_inf></sense>')
 
         sense = self.helper.buildAndSaveSense(entry, xml)
-        savedEntry = models.JMdictEntry.objects.get(ent_seq = seq)
-        savedSense = models.JMdictSense.objects.get(id = sense.id)
+        savedEntry = JMdictEntry.objects.get(ent_seq = seq)
+        savedSense = JMdictSense.objects.get(id = sense.id)
 
         self.assertEqual(savedEntry.ent_seq, seq)
         self.assertEqual(savedSense.entry, savedEntry)
@@ -188,10 +188,10 @@ class SeedJMdictHelperTestCase(TestCase):
 
     def test_build_glossary(self):
         seq = 1000003
-        entry = models.JMdictEntry(ent_seq = seq)
+        entry = JMdictEntry(ent_seq = seq)
         entry.save()
 
-        sense = models.JMdictSense(
+        sense = JMdictSense(
             entry = entry,
             xreferences = [],
             antonyms = [],
@@ -207,9 +207,9 @@ class SeedJMdictHelperTestCase(TestCase):
         xml = etree.XML(f'<gloss xml:lang="{lang}" g_type="{type}">{gloss}</gloss>')
 
         glossary = self.helper.buildAndSaveGlossary(sense, xml)
-        savedEntry = models.JMdictEntry.objects.get(ent_seq = seq)
-        savedSense = models.JMdictSense.objects.get(id = sense.id)
-        savedGlossary = models.JMdictGlossary.objects.get(id = glossary.id)
+        savedEntry = JMdictEntry.objects.get(ent_seq = seq)
+        savedSense = JMdictSense.objects.get(id = sense.id)
+        savedGlossary = JMdictGlossary.objects.get(id = glossary.id)
 
         self.assertEqual(savedEntry.ent_seq, seq)
         self.assertEqual(savedSense.entry, savedEntry)
@@ -220,10 +220,10 @@ class SeedJMdictHelperTestCase(TestCase):
 
     def test_build_lsource(self):
         seq = 1000004
-        entry = models.JMdictEntry(ent_seq = seq)
+        entry = JMdictEntry(ent_seq = seq)
         entry.save()
 
-        sense = models.JMdictSense(
+        sense = JMdictSense(
             entry = entry,
             xreferences = [],
             antonyms = [],
@@ -239,9 +239,9 @@ class SeedJMdictHelperTestCase(TestCase):
         xml = etree.XML(f'<lsource xml:lang="{lang}" ls_type="{type}" ls_wasei="{wasei}">{text}</lsource>')
 
         source = self.helper.buildAndSaveSource(sense, xml)
-        savedEntry = models.JMdictEntry.objects.get(ent_seq = seq)
-        savedSense = models.JMdictSense.objects.get(id = sense.id)
-        savedSource = models.JMdictSource.objects.get(id = source.id)
+        savedEntry = JMdictEntry.objects.get(ent_seq = seq)
+        savedSense = JMdictSense.objects.get(id = sense.id)
+        savedSource = Source.objects.get(id = source.id)
 
         self.assertEqual(savedEntry.ent_seq, seq)
         self.assertEqual(savedSense.entry, savedEntry)

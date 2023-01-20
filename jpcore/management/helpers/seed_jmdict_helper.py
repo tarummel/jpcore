@@ -1,6 +1,6 @@
 from xml.etree import ElementTree as etree
 
-from jpcore import models
+from jpcore.models import JMdictEntry, JMdictKanji, JMdictReading, JMdictSense, JMdictGlossary, JMdictSource
 
 PATH = './resources/JMdict_e.xml'
 XML_NAMESPACE = '{http://www.w3.org/XML/1998/namespace}'
@@ -48,12 +48,12 @@ class SeedJMdictHelper():
         return result
 
     def buildAndSaveEntry(self, xml):
-        entry = models.JMdictEntry(ent_seq = int(xml.find('ent_seq').text))
+        entry = JMdictEntry(ent_seq = int(xml.find('ent_seq').text))
         entry.save()
         return entry
 
     def buildAndSaveKanji(self, entryObj, xml):
-        kanji = models.JMdictKanji(
+        kanji = JMdictKanji(
             entry = entryObj, 
             content = self.getText(xml, 'keb'), 
             information = self.getText(xml, 'ke_inf'), 
@@ -63,7 +63,7 @@ class SeedJMdictHelper():
         return kanji
         
     def buildAndSaveReading(self, entryObj, xml):
-        reading = models.JMdictReading(
+        reading = JMdictReading(
             entry = entryObj, 
             content = self.getText(xml, 'reb'), 
             no_kanji = True if xml.find('re_nokanji') != None else False,
@@ -75,7 +75,7 @@ class SeedJMdictHelper():
         return reading
 
     def buildAndSaveSense(self, entryObj, xml):
-        sense = models.JMdictSense(
+        sense = JMdictSense(
             entry = entryObj,
             xreferences = self.getList(xml, 'xref'),
             antonyms = self.getList(xml, 'ant'),
@@ -90,7 +90,7 @@ class SeedJMdictHelper():
 
     def buildAndSaveGlossary(self, senseObj, xml):
         text, attrs = self.getTextWithAttributes(xml)
-        glossary = models.JMdictGlossary(
+        glossary = JMdictGlossary(
             sense = senseObj, 
             gloss = text,
             language = attrs['lang'] if 'lang' in attrs else '',
@@ -101,7 +101,7 @@ class SeedJMdictHelper():
 
     def buildAndSaveSource(self, senseObj, xml):
         text, attrs = self.getTextWithAttributes(xml)
-        source = models.JMdictSource(
+        source = JMdictSource(
             sense = senseObj,
             content = text,
             language = attrs['lang'] if 'lang' in attrs else '',

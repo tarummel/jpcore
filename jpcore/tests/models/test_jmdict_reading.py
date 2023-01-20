@@ -1,12 +1,12 @@
 from django.test import TestCase
-from jpcore import models
+from jpcore.models import JMdictEntry, JMdictReading
 
 class JMdictReadingTestCase(TestCase):
     oEntry, oReading = None, None
 
     def setUp(self):
-        self.oEntry = models.JMdictEntry(ent_seq = 1000010)
-        self.oReading = models.JMdictReading(
+        self.oEntry = JMdictEntry(ent_seq = 1000010)
+        self.oReading = JMdictReading(
             id = 3,
             entry = self.oEntry,
             content = '明白', 
@@ -19,7 +19,7 @@ class JMdictReadingTestCase(TestCase):
         self.oReading.save()
 
     def testCreateAndUpdate(self):
-        cReading = models.JMdictReading.objects.get(id = self.oReading.id)
+        cReading = JMdictReading.objects.get(id = self.oReading.id)
 
         self.assertEqual(cReading.content, self.oReading.content)
         self.assertEqual(cReading.no_kanji, self.oReading.no_kanji)
@@ -39,7 +39,7 @@ class JMdictReadingTestCase(TestCase):
         cReading.priorities = ['ichi1', 'news1']
         cReading.save()
 
-        nReading = models.JMdictReading.objects.get(id = cReading.id)
+        nReading = JMdictReading.objects.get(id = cReading.id)
 
         self.assertTrue(nReading)
         self.assertEqual(nReading.content, cReading.content)

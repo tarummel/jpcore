@@ -2,7 +2,7 @@ import sys
 import time
 from django.core.management.base import BaseCommand
 
-from jpcore import models
+from jpcore.models import Radical, Kanji
 
 # Execution time (seconds):25.42658019065857
 # Count:54323
@@ -17,8 +17,8 @@ class Command(BaseCommand):
     help = 'Seed Krad Command'
 
     def __init__(self):
-        models.Radical.objects.all().delete()
-        models.Kanji.objects.all().delete()
+        Radical.objects.all().delete()
+        Kanji.objects.all().delete()
 
     def handle(self, *args, **options):
         startTime = time.time()
@@ -40,7 +40,7 @@ class Command(BaseCommand):
             for line in f:
                 e = line.split('\t')
                 if e[1] != '':
-                    savedRadical = models.Radical(
+                    savedRadical = Radical(
                         number = int(e[0]), 
                         radical = e[1],
                         strokes = int(e[2]),
@@ -62,7 +62,7 @@ class Command(BaseCommand):
         return split[0], split[2:]
 
     def kradPrecheck(self):
-        allRad = models.Radical.objects.all().values('radical', 'strokes')
+        allRad = Radical.objects.all().values('radical', 'strokes')
 
         if len(allRad) != stats[0]:
             sys.exit('Mismatched radical count between db and radinfo')
@@ -89,7 +89,7 @@ class Command(BaseCommand):
                     strokes += radDict[r].strokes
                     
                 # early save as pre-req for ManyToMany relationship
-                savedKanji = models.Kanji(kanji = kanji, strokes = strokes)
+                savedKanji = Kanji(kanji = kanji, strokes = strokes)
                 savedKanji.save()
 
                 # second pass for adding radicals to Kanji

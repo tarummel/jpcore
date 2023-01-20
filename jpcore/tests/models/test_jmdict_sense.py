@@ -1,12 +1,12 @@
 from django.test import TestCase
-from jpcore import models
+from jpcore.models import JMdictEntry, JMdictSense
 
 class JMdictSenseTestCase(TestCase):
     oEntry, oSense = None, None
 
     def setUp(self):
-        self.oEntry = models.JMdictEntry(ent_seq = 1000020)
-        self.oSense = models.JMdictSense(
+        self.oEntry = JMdictEntry(ent_seq = 1000020)
+        self.oSense = JMdictSense(
             id = 5, 
             entry = self.oEntry,
             xreferences = [],
@@ -21,7 +21,7 @@ class JMdictSenseTestCase(TestCase):
         self.oSense.save()
 
     def testCreateAndUpdate(self):
-        cSense = models.JMdictSense.objects.get(id = self.oSense.id)
+        cSense = JMdictSense.objects.get(id = self.oSense.id)
 
         self.assertTrue(cSense)
         self.assertEqual(cSense.xreferences, self.oSense.xreferences)
@@ -41,7 +41,7 @@ class JMdictSenseTestCase(TestCase):
         cSense.information = 'used for something or someone close to the speaker, including the speaker himself'
         cSense.save()
 
-        nSense = models.JMdictSense.objects.get(id = self.oSense.id)
+        nSense = JMdictSense.objects.get(id = self.oSense.id)
 
         self.assertTrue(nSense)
         self.assertEqual(nSense.xreferences, cSense.xreferences)

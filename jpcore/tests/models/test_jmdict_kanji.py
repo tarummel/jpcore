@@ -1,12 +1,12 @@
 from django.test import TestCase
-from jpcore import models
+from jpcore.models import JMdictEntry, JMdictKanji
 
 class JMdictKanjiTestCase(TestCase):
     oEntry, oKanji = None, None
 
     def setUp(self):
-        self.oEntry = models.JMdictEntry(ent_seq = 1000010)
-        self.oKanji = models.JMdictKanji(
+        self.oEntry = JMdictEntry(ent_seq = 1000010)
+        self.oKanji = JMdictKanji(
             id = 7,
             entry = self.oEntry,
             content = '明白', 
@@ -17,7 +17,7 @@ class JMdictKanjiTestCase(TestCase):
         self.oKanji.save()
 
     def testCreateAndUpdate(self):
-        cKanji = models.JMdictKanji.objects.get(id = self.oKanji.id)
+        cKanji = JMdictKanji.objects.get(id = self.oKanji.id)
 
         self.assertTrue(cKanji)
         self.assertEqual(cKanji.id, self.oKanji.id)
@@ -35,7 +35,7 @@ class JMdictKanjiTestCase(TestCase):
         cKanji.priorities = ['news1', 'ichi1']
         cKanji.save()
 
-        nKanji = models.JMdictKanji.objects.get(id = self.oKanji.id)
+        nKanji = JMdictKanji.objects.get(id = self.oKanji.id)
 
         self.assertTrue(nKanji)
         self.assertEqual(nKanji.id, cKanji.id)

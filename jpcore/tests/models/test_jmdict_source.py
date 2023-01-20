@@ -1,12 +1,12 @@
 from django.test import TestCase
-from jpcore import models
+from jpcore.models import JMdictEntry, JMdictSense, JMdictSource
 
 class JMdictSourceTestCase(TestCase):
     oEntry, oSense, oSource = None, None, None
 
     def setUp(self):
-        self.oEntry = models.JMdictEntry(ent_seq = 1000500)
-        self.oSense = models.JMdictSense(
+        self.oEntry = JMdictEntry(ent_seq = 1000500)
+        self.oSense = JMdictSense(
             id = 100,
             entry = self.oEntry,
             xreferences = [],
@@ -17,7 +17,7 @@ class JMdictSourceTestCase(TestCase):
             dialects = [],
             information = ''
         )
-        self.oSource = models.JMdictSource(
+        self.oSource = JMdictSource(
             id = 49,
             sense = self.oSense,
             content = 'bēngzi',
@@ -30,9 +30,9 @@ class JMdictSourceTestCase(TestCase):
         self.oSource.save()
 
     def testCreateAndUpdate(self):
-        cSource = models.JMdictSource.objects.get(id = self.oSource.id)
-        cSense = models.JMdictSense.objects.get(id = self.oSense.id)
-        cEntry = models.JMdictEntry.objects.get(ent_seq = self.oEntry.ent_seq)
+        cSource = JMdictSource.objects.get(id = self.oSource.id)
+        cSense = JMdictSense.objects.get(id = self.oSense.id)
+        cEntry = JMdictEntry.objects.get(ent_seq = self.oEntry.ent_seq)
 
         self.assertEqual(cEntry, self.oEntry)
         self.assertEqual(cSense, self.oSense)
@@ -49,7 +49,7 @@ class JMdictSourceTestCase(TestCase):
         cSource.waseieigo = True
         cSource.save()
 
-        nSource = models.JMdictSource.objects.get(id = self.oSource.id)
+        nSource = JMdictSource.objects.get(id = self.oSource.id)
 
         self.assertEqual(nSource.id, cSource.id)
         self.assertEqual(nSource.content, cSource.content)
