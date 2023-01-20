@@ -1,5 +1,5 @@
 from django.test import TestCase
-from app import models
+from jpcore import models
 
 class JMdictKanjiTestCase(TestCase):
     oEntry, oKanji = None, None

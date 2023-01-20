@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
                 ('misc', django.contrib.postgres.fields.ArrayField(base_field=models.TextField(), blank=True, size=None)),
                 ('dialects', django.contrib.postgres.fields.ArrayField(base_field=models.TextField(), blank=True, size=None)),
                 ('information', models.TextField(blank=True)),
-                ('entry', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='app.jmdictentry')),
+                ('entry', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='jpcore.jmdictentry')),
             ],
         ),
         migrations.CreateModel(
@@ -53,7 +53,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('kanji', models.TextField()),
                 ('strokes', models.IntegerField()),
-                ('radicals', models.ManyToManyField(to='app.radical')),
+                ('radicals', models.ManyToManyField(to='jpcore.radical')),
             ],
         ),
         migrations.CreateModel(
@@ -64,7 +64,7 @@ class Migration(migrations.Migration):
                 ('language', models.TextField(blank=True)),
                 ('partial', models.BooleanField(blank=True)),
                 ('waseieigo', models.BooleanField(blank=True)),
-                ('sense', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='app.jmdictsense')),
+                ('sense', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='jpcore.jmdictsense')),
             ],
         ),
         migrations.CreateModel(
@@ -76,7 +76,7 @@ class Migration(migrations.Migration):
                 ('restrictions', models.TextField(blank=True)),
                 ('information', models.TextField(blank=True)),
                 ('priorities', django.contrib.postgres.fields.ArrayField(base_field=models.TextField(), blank=True, size=None)),
-                ('entry', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='app.jmdictentry')),
+                ('entry', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='jpcore.jmdictentry')),
             ],
         ),
         migrations.CreateModel(
@@ -86,7 +86,7 @@ class Migration(migrations.Migration):
                 ('content', models.TextField(blank=True)),
                 ('information', models.TextField(blank=True)),
                 ('priorities', django.contrib.postgres.fields.ArrayField(base_field=models.TextField(), blank=True, size=None)),
-                ('entry', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='app.jmdictentry')),
+                ('entry', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='jpcore.jmdictentry')),
             ],
         ),
         migrations.CreateModel(
@@ -96,7 +96,7 @@ class Migration(migrations.Migration):
                 ('gloss', models.TextField(blank=True)),
                 ('language', models.TextField(blank=True)),
                 ('type', models.TextField(blank=True)),
-                ('sense', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='app.jmdictsense')),
+                ('sense', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='jpcore.jmdictsense')),
             ],
         ),
     ]

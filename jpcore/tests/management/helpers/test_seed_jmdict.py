@@ -1,8 +1,8 @@
 from django.test import TestCase
 from xml.etree import ElementTree as etree
 
-from app import models
-from app.management.helpers import SeedJMdictHelper as helper
+from jpcore import models
+from jpcore.management.helpers import SeedJMdictHelper as helper
 
 class SeedJMdictHelperTestCase(TestCase):
     helper = helper()

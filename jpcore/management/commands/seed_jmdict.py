@@ -1,8 +1,8 @@
 import time
 from django.core.management.base import BaseCommand
 
-from app import models
-from app.management.helpers import SeedJMdictHelper as helper
+from jpcore import models
+from jpcore.management.helpers import SeedJMdictHelper as helper
 
 # Entry:198729, Kanji:204164, Read:238386, Sense:228960, Gloss:395043, Sour:5581
 # Execution time (seconds):906.6395170688629

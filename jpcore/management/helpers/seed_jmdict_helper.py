@@ -1,6 +1,6 @@
 from xml.etree import ElementTree as etree
 
-from app import models
+from jpcore import models
 
 PATH = './resources/JMdict_e.xml'
 XML_NAMESPACE = '{http://www.w3.org/XML/1998/namespace}'

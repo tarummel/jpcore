@@ -1,5 +1,5 @@
 from django.test import TestCase
-from app import models
+from jpcore import models
 
 class JMdictGlossaryTestCase(TestCase):
     oEntry, oSense, oGloss = None, None, None

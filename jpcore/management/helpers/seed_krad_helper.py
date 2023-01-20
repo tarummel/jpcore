@@ -1,4 +1,4 @@
-from app import models
+from jpcore import models
 
 class SeedKradHelper():
     pass

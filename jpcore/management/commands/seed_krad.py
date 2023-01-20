@@ -2,7 +2,7 @@ import sys
 import time
 from django.core.management.base import BaseCommand
 
-from app import models
+from jpcore import models
 
 # Execution time (seconds):25.42658019065857
 # Count:54323
