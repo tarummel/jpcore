@@ -41,14 +41,14 @@ class Command(BaseCommand):
                 e = line.split('\t')
                 if e[1] != '':
                     savedRadical = Radical(
-                        number = int(e[0]), 
+                        number = int(e[0]) if e[0] else None, 
                         radical = e[1],
                         strokes = int(e[2]),
                         meaning = e[3],
                         reading = e[4],
                         position = e[5],
                         frequency = int(e[6]),
-                        notes = e[7]
+                        notes = e[7].strip()
                     )
                     savedRadical.save()
                     stats[1] += 1
@@ -64,8 +64,8 @@ class Command(BaseCommand):
     def kradPrecheck(self):
         allRad = Radical.objects.all().values('radical', 'strokes')
 
-        if len(allRad) != stats[0]:
-            sys.exit('Mismatched radical count between db and radinfo')
+        if len(allRad) != stats[1]:
+            sys.exit(f'Mismatched count between db: {len(allRad)} and radinfo: {stats[1]} ')
 
         missing = set()
         with open(f'{KRAD_PATH}') as f:
