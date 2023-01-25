@@ -2,7 +2,7 @@ from django.contrib.postgres.fields import ArrayField
 from django.db import models
 
 class JMdictKanji(models.Model):
-    entry = models.ForeignKey('JMdictEntry', on_delete = models.CASCADE)
+    entry = models.ForeignKey('JMdictEntry', related_name = 'jkanji', on_delete = models.CASCADE)
 
     content = models.TextField(blank = True)
     information = models.TextField(blank = True)

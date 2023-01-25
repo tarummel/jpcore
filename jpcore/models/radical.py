@@ -9,7 +9,6 @@ class Radical(models.Model):
     position = models.TextField(blank = True)
     frequency = models.IntegerField()
     notes = models.TextField(blank = True)
-    # kanji_set = Kanji ManyToMany
 
     def __str__(self):
         return f'No: {self.number}, rad: {self.radical}, stks: {self.strokes}, mean: {self.meaning}, read: {self.reading}, pos: {self.position}, note: {self.notes}'

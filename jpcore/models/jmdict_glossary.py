@@ -1,7 +1,7 @@
 from django.db import models
 
 class JMdictGlossary(models.Model):
-    sense = models.ForeignKey('JMdictSense', on_delete = models.CASCADE)
+    sense = models.ForeignKey('JMdictSense', related_name = 'jglossary', on_delete = models.CASCADE)
 
     gloss = models.TextField(blank = True)
     language = models.TextField(blank = True)

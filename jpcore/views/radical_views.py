@@ -15,13 +15,14 @@ def error(code, reason = None):
         return JsonResponse({'status': 'failed', 'reason': reason}, status = code)
     return JsonResponse({'status': 'failed'}, status = code)
 
-
+# returns all Radicals
 @require_GET
 def list(request):
     queryset = Radical.objects.all()
     serializer = RadicalSerializer(queryset, many = True, fields = NO_KANJI_FIELDS)
     return success(HTTPStatus.OK, serializer.data)
 
+# returns the Radical object associated with the radical char
 @require_GET
 def get(request, radical):
     if len(radical) == 1:
@@ -35,7 +36,7 @@ def get(request, radical):
 
     return error(HTTPStatus.BAD_REQUEST)
 
-# TODO: Kanji returned should have keb, reb, glosses?
+# returns all Kanji associated with a list of comma-delimited radical chars
 @require_GET
 def getKanjiByRadical(request, radicals):
     valid = True

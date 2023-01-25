@@ -1,7 +1,7 @@
 from django.db import models
 
 class JMdictSource(models.Model):
-    sense = models.ForeignKey('JMdictSense', on_delete = models.CASCADE)
+    sense = models.ForeignKey('JMdictSense', related_name = 'jsource', on_delete = models.CASCADE)
 
     content = models.TextField()
     language = models.TextField(blank = True)

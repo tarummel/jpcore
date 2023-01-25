@@ -2,7 +2,7 @@ from django.contrib.postgres.fields import ArrayField
 from django.db import models
 
 class JMdictSense(models.Model):
-    entry = models.ForeignKey('JMdictEntry', on_delete = models.CASCADE)
+    entry = models.ForeignKey('JMdictEntry', related_name = 'jsense', on_delete = models.CASCADE)
 
     xreferences = ArrayField(models.TextField(), blank = True)
     antonyms = ArrayField(models.TextField(), blank = True)
