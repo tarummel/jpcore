@@ -10,5 +10,6 @@ urlpatterns = [
     path('api/', include([
         path('radicals/', views.radical_views.list),
         path('radicals/<str:radical>/', views.radical_views.get),
+        path('radicals/<str:radicals>/kanji/', views.radical_views.getKanjiByRadical)
     ])),
 ]

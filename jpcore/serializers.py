@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from jpcore.models import Radical
+from jpcore.models import Kanji, Radical
 
 class DynamicFieldsModelSerializer(serializers.ModelSerializer):
     """
@@ -17,7 +17,22 @@ class DynamicFieldsModelSerializer(serializers.ModelSerializer):
             for field_name in existing - allowed:
                 self.fields.pop(field_name)
 
+class KanjiSerializer(DynamicFieldsModelSerializer):
+    radicals = serializers.PrimaryKeyRelatedField(queryset = Radical.objects.all(), many = True)
+    
+    class Meta:
+        model = Kanji
+        fields = ['kanji', 'strokes', 'radicals']
+
+    def simplified(self, kanji):
+        return f'{kanji.kanji}{kanji.strokes}'
+
 class RadicalSerializer(DynamicFieldsModelSerializer):
+    kanji_set = KanjiSerializer(read_only = True, many = True)
+
     class Meta:
         model = Radical
-        fields = ['number', 'radical', 'strokes', 'meaning', 'reading', 'frequency', 'position', 'notes']
+        fields = ['number', 'radical', 'strokes', 'meaning', 'reading', 'frequency', 'position', 'notes', 'kanji_set']
+
+    def simplified(self, radical):
+        return f'{radical.radical}{radical.strokes}'
