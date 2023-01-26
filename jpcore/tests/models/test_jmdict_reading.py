@@ -1,49 +1,42 @@
 from django.test import TestCase
 from jpcore.models import JMdictEntry, JMdictReading
 
+
 class JMdictReadingTestCase(TestCase):
-    oEntry, oReading = None, None
 
     def setUp(self):
-        self.oEntry = JMdictEntry(ent_seq = 1000010)
-        self.oReading = JMdictReading(
+        self.entry = JMdictEntry.objects.create(ent_seq = 1000010)
+        self.reading = JMdictReading.objects.create(
             id = 3,
-            entry = self.oEntry,
+            entry = self.entry,
             content = '明白', 
             no_kanji = True,
             restrictions = '彼',
             information = '&ok;', 
             priorities = ['ichi1'],
         )
-        self.oEntry.save()
-        self.oReading.save()
 
     def test_create_update(self):
-        cReading = JMdictReading.objects.get(id = self.oReading.id)
+        savedReading = JMdictReading.objects.get(id = self.reading.id)
 
-        self.assertEqual(cReading.content, self.oReading.content)
-        self.assertEqual(cReading.no_kanji, self.oReading.no_kanji)
-        self.assertEqual(cReading.restrictions, self.oReading.restrictions)
-        self.assertEqual(cReading.information, self.oReading.information)
-        self.assertEqual(cReading.priorities, self.oReading.priorities)
+        self.assertEqual(savedReading.entry.ent_seq, self.entry.ent_seq)
+        self.assertEqual(savedReading.content, self.reading.content)
+        self.assertEqual(savedReading.no_kanji, self.reading.no_kanji)
+        self.assertEqual(savedReading.restrictions, self.reading.restrictions)
+        self.assertEqual(savedReading.information, self.reading.information)
+        self.assertEqual(savedReading.priorities, self.reading.priorities)
 
-        cEntry = cReading.entry
+        savedReading.content = ''
+        savedReading.no_kanji = False
+        savedReading.restrictions = ''
+        savedReading.information = ''
+        savedReading.priorities = ['ichi1', 'news1']
+        savedReading.save()
 
-        self.assertTrue(cEntry)
-        self.assertEqual(cEntry.ent_seq, self.oEntry.ent_seq)
+        reading = JMdictReading.objects.get(id = savedReading.id)
 
-        cReading.content = ''
-        cReading.no_kanji = False
-        cReading.restrictions = ''
-        cReading.information = ''
-        cReading.priorities = ['ichi1', 'news1']
-        cReading.save()
-
-        nReading = JMdictReading.objects.get(id = cReading.id)
-
-        self.assertTrue(nReading)
-        self.assertEqual(nReading.content, cReading.content)
-        self.assertEqual(nReading.no_kanji, cReading.no_kanji)
-        self.assertEqual(nReading.restrictions, cReading.restrictions)
-        self.assertEqual(nReading.information, cReading.information)
-        self.assertEqual(nReading.priorities, cReading.priorities)
+        self.assertEqual(reading.content, savedReading.content)
+        self.assertEqual(reading.no_kanji, savedReading.no_kanji)
+        self.assertEqual(reading.restrictions, savedReading.restrictions)
+        self.assertEqual(reading.information, savedReading.information)
+        self.assertEqual(reading.priorities, savedReading.priorities)

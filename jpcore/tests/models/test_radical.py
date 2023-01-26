@@ -1,7 +1,9 @@
 from django.test import TestCase
 from jpcore.models import Radical, Kanji
 
+
 class RadicalTestCase(TestCase):
+
     def test_create(self):
         savedRadical = Radical.objects.create(number = 147, radical = '見', strokes = 7, meaning = 'to see', reading = 'みる', frequency = 70, notes = '')
 
@@ -26,7 +28,6 @@ class RadicalTestCase(TestCase):
         self.assertEqual(savedRad3.kanji_set.all().count(), 0)
 
         savedKanji = Kanji.objects.create(kanji = '見', strokes = 7)
-
         savedRad1.kanji_set.add(savedKanji)
         savedRad2.kanji_set.add(savedKanji)
         savedRad3.kanji_set.add(savedKanji)

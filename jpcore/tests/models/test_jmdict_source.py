@@ -1,58 +1,55 @@
 from django.test import TestCase
 from jpcore.models import JMdictEntry, JMdictSense, JMdictSource
 
+
 class JMdictSourceTestCase(TestCase):
-    oEntry, oSense, oSource = None, None, None
 
     def setUp(self):
-        self.oEntry = JMdictEntry(ent_seq = 1000500)
-        self.oSense = JMdictSense(
-            id = 100,
-            entry = self.oEntry,
-            xreferences = [],
-            antonyms = [],
-            parts_of_speech = [],
-            fields = [],
-            misc = [],
-            dialects = [],
-            information = ''
+        self.entry = JMdictEntry.objects.create(ent_seq = 1000500)
+        self.sense = JMdictSense.objects.create(
+            id = 20, 
+            entry = self.entry,
+            xreferences = ['知識人'],
+            antonyms = ['ドライ・1'],
+            parts_of_speech = ['adjective (keiyoushi)'],
+            fields = ['linguistics'],
+            misc = ['archaic'],
+            dialects = ['Hokkaido-ben'],
+            information = 'some info'
         )
-        self.oSource = JMdictSource(
+        self.oSource = JMdictSource.objects.create(
             id = 49,
-            sense = self.oSense,
+            sense = self.sense,
             content = 'bēngzi',
             language = 'chi',
             partial = False,
             waseieigo = False,
         )
-        self.oEntry.save()
-        self.oSense.save()
-        self.oSource.save()
 
     def test_create_update(self):
-        cSource = JMdictSource.objects.get(id = self.oSource.id)
-        cSense = JMdictSense.objects.get(id = self.oSense.id)
-        cEntry = JMdictEntry.objects.get(ent_seq = self.oEntry.ent_seq)
+        savedSource = JMdictSource.objects.get(id = self.oSource.id)
+        savedSense = JMdictSense.objects.get(id = self.sense.id)
+        savedEntry = JMdictEntry.objects.get(ent_seq = self.entry.ent_seq)
 
-        self.assertEqual(cEntry, self.oEntry)
-        self.assertEqual(cSense, self.oSense)
+        self.assertEqual(savedEntry, self.entry)
+        self.assertEqual(savedSense, self.sense)
 
-        self.assertEqual(cSource.id, self.oSource.id)
-        self.assertEqual(cSource.content, self.oSource.content)
-        self.assertEqual(cSource.language, self.oSource.language)
-        self.assertEqual(cSource.partial, self.oSource.partial)
-        self.assertEqual(cSource.waseieigo, self.oSource.waseieigo)
+        self.assertEqual(savedSource.id, self.oSource.id)
+        self.assertEqual(savedSource.content, self.oSource.content)
+        self.assertEqual(savedSource.language, self.oSource.language)
+        self.assertEqual(savedSource.partial, self.oSource.partial)
+        self.assertEqual(savedSource.waseieigo, self.oSource.waseieigo)
 
-        cSource.content = 'art déco'
-        cSource.language = 'fre'
-        cSource.partial = True
-        cSource.waseieigo = True
-        cSource.save()
+        savedSource.content = 'art déco'
+        savedSource.language = 'fre'
+        savedSource.partial = True
+        savedSource.waseieigo = True
+        savedSource.save()
 
-        nSource = JMdictSource.objects.get(id = self.oSource.id)
+        source = JMdictSource.objects.get(id = self.oSource.id)
 
-        self.assertEqual(nSource.id, cSource.id)
-        self.assertEqual(nSource.content, cSource.content)
-        self.assertEqual(nSource.language, cSource.language)
-        self.assertEqual(nSource.partial, cSource.partial)
-        self.assertEqual(nSource.waseieigo, cSource.waseieigo)
+        self.assertEqual(source.id, savedSource.id)
+        self.assertEqual(source.content, savedSource.content)
+        self.assertEqual(source.language, savedSource.language)
+        self.assertEqual(source.partial, savedSource.partial)
+        self.assertEqual(source.waseieigo, savedSource.waseieigo)

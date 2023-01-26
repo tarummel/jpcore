@@ -1,44 +1,36 @@
 from django.test import TestCase
 from jpcore.models import JMdictEntry, JMdictKanji
 
-class JMdictKanjiTestCase(TestCase):
-    oEntry, oKanji = None, None
 
+class JMdictKanjiTestCase(TestCase):
+    
     def setUp(self):
-        self.oEntry = JMdictEntry(ent_seq = 1000010)
-        self.oKanji = JMdictKanji(
+        self.entry = JMdictEntry.objects.create(ent_seq = 1000010)
+        self.kanji = JMdictKanji.objects.create(
             id = 7,
-            entry = self.oEntry,
+            entry = self.entry,
             content = '明白', 
             information = '&ateji;', 
             priorities = ['news1'],
         )
-        self.oEntry.save()
-        self.oKanji.save()
 
     def test_create_update(self):
-        cKanji = JMdictKanji.objects.get(id = self.oKanji.id)
+        savedKanji = JMdictKanji.objects.get(id = self.kanji.id)
 
-        self.assertTrue(cKanji)
-        self.assertEqual(cKanji.id, self.oKanji.id)
-        self.assertEqual(cKanji.content, self.oKanji.content)
-        self.assertEqual(cKanji.information, self.oKanji.information)
-        self.assertEqual(cKanji.priorities, self.oKanji.priorities)
+        self.assertEqual(savedKanji.entry.ent_seq, self.entry.ent_seq)
+        self.assertEqual(savedKanji.id, self.kanji.id)
+        self.assertEqual(savedKanji.content, self.kanji.content)
+        self.assertEqual(savedKanji.information, self.kanji.information)
+        self.assertEqual(savedKanji.priorities, self.kanji.priorities)
 
-        cEntry = cKanji.entry
+        savedKanji.content = '〃'
+        savedKanji.information = '&rK;'
+        savedKanji.priorities = ['news1', 'ichi1']
+        savedKanji.save()
 
-        self.assertTrue(cEntry)
-        self.assertEqual(cEntry.ent_seq, self.oEntry.ent_seq)
+        kanji = JMdictKanji.objects.get(id = self.kanji.id)
 
-        cKanji.content = '〃'
-        cKanji.information = '&rK;'
-        cKanji.priorities = ['news1', 'ichi1']
-        cKanji.save()
-
-        nKanji = JMdictKanji.objects.get(id = self.oKanji.id)
-
-        self.assertTrue(nKanji)
-        self.assertEqual(nKanji.id, cKanji.id)
-        self.assertEqual(nKanji.content, cKanji.content)
-        self.assertEqual(nKanji.information, cKanji.information)
-        self.assertEqual(nKanji.priorities, cKanji.priorities)
+        self.assertEqual(kanji.id, savedKanji.id)
+        self.assertEqual(kanji.content, savedKanji.content)
+        self.assertEqual(kanji.information, savedKanji.information)
+        self.assertEqual(kanji.priorities, savedKanji.priorities)

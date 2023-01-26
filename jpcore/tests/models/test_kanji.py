@@ -1,6 +1,7 @@
 from django.test import TestCase
 from jpcore.models import Kanji, Radical
 
+
 class KanjiTestCase(TestCase):
 
     def test_create(self):
@@ -11,7 +12,6 @@ class KanjiTestCase(TestCase):
         self.assertEqual(kanji.kanji, savedKanji.kanji)
         self.assertEqual(kanji.strokes, savedKanji.strokes)
         self.assertEqual(kanji.radicals.all().count(), 0)
-        
 
     def test_add_radicals(self):
         savedKanji = Kanji.objects.create(kanji = '見', strokes = 7)
@@ -27,7 +27,6 @@ class KanjiTestCase(TestCase):
         savedKanji.radicals.add(savedRad3)
 
         kanji = Kanji.objects.get(id = savedKanji.id)
-
         rad1 = Radical.objects.get(id = savedRad1.id)
         rad2 = Radical.objects.get(id = savedRad2.id)
         rad3 = Radical.objects.get(id = savedRad3.id)
@@ -36,7 +35,8 @@ class KanjiTestCase(TestCase):
         self.assertEqual(kanji.strokes, savedKanji.strokes)
         self.assertEqual(kanji.radicals.all().count(), 3)
         
-        r1 = kanji.radicals.all()[0]
+        allRadicals = kanji.radicals.all()
+        r1 = allRadicals[0]
         self.assertEqual(r1.id, rad1.id)
         self.assertEqual(r1.radical, rad1.radical)
         self.assertEqual(r1.strokes, rad1.strokes)
@@ -45,7 +45,7 @@ class KanjiTestCase(TestCase):
         self.assertEqual(r1.frequency, rad1.frequency)
         self.assertEqual(r1.notes, rad1.notes)
 
-        r2 = kanji.radicals.all()[1]
+        r2 = allRadicals[1]
         self.assertEqual(r2.id, rad2.id)
         self.assertEqual(r2.radical, rad2.radical)
         self.assertEqual(r2.strokes, rad2.strokes)
@@ -54,7 +54,7 @@ class KanjiTestCase(TestCase):
         self.assertEqual(r2.frequency, rad2.frequency)
         self.assertEqual(r2.notes, rad2.notes)
 
-        r3 = kanji.radicals.all()[2]
+        r3 = allRadicals[2]
         self.assertEqual(r3.id, rad3.id)
         self.assertEqual(r3.radical, rad3.radical)
         self.assertEqual(r3.strokes, rad3.strokes)

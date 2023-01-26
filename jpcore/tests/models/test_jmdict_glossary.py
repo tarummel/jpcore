@@ -1,53 +1,49 @@
 from django.test import TestCase
 from jpcore.models import JMdictEntry, JMdictSense, JMdictGlossary
 
+
 class JMdictGlossaryTestCase(TestCase):
-    oEntry, oSense, oGloss = None, None, None
 
     def setUp(self):
-        self.oEntry = JMdictEntry(ent_seq = 1000010)
-        self.oSense = JMdictSense(
+        self.entry = JMdictEntry.objects.create(ent_seq = 1000010)
+        self.sense = JMdictSense.objects.create(
             id = 20, 
-            entry = self.oEntry,
-            xreferences = [],
-            antonyms = [],
-            parts_of_speech = [],
-            fields = [],
-            misc = [],
-            dialects = [],
-            information = ''
+            entry = self.entry,
+            xreferences = ['知識人'],
+            antonyms = ['ドライ・1'],
+            parts_of_speech = ['adjective (keiyoushi)'],
+            fields = ['linguistics'],
+            misc = ['archaic'],
+            dialects = ['Hokkaido-ben'],
+            information = 'some info'
         )
-        self.oGloss = JMdictGlossary(
+        self.glossary = JMdictGlossary.objects.create(
             id = 2, 
-            sense = self.oSense, 
+            sense = self.sense, 
             gloss = 'NHK Symphony Orchestra',
             language = 'chi',
             type = 'part'
         )
-        self.oEntry.save()
-        self.oSense.save()
-        self.oGloss.save()
 
     def test_create_update(self):
-        cGloss = JMdictGlossary.objects.get(id = self.oGloss.id)
-        cSense = JMdictSense.objects.get(id = self.oSense.id)
-        cEntry = JMdictEntry.objects.get(ent_seq = self.oEntry.ent_seq)
+        savedGloss = JMdictGlossary.objects.get(id = self.glossary.id)
+        savedSense = JMdictSense.objects.get(id = self.sense.id)
+        savedEntry = JMdictEntry.objects.get(ent_seq = self.entry.ent_seq)
 
-        self.assertEqual(cSense, self.oSense)
-        self.assertEqual(cEntry, self.oEntry)
+        self.assertEqual(savedSense, self.sense)
+        self.assertEqual(savedEntry, self.entry)
+        self.assertEqual(savedGloss.gloss, self.glossary.gloss)
+        self.assertEqual(savedGloss.language, self.glossary.language)
+        self.assertEqual(savedGloss.type, self.glossary.type)
 
-        self.assertEqual(cGloss.gloss, self.oGloss.gloss)
-        self.assertEqual(cGloss.language, self.oGloss.language)
-        self.assertEqual(cGloss.type, self.oGloss.type)
+        savedGloss.gloss = 'plastic wrap'
+        savedGloss.language = 'ger'
+        savedGloss.type = 'tm'
+        savedGloss.save()
 
-        cGloss.gloss = 'plastic wrap'
-        cGloss.language = 'ger'
-        cGloss.type = 'tm'
-        cGloss.save()
+        gloss = JMdictGlossary.objects.get(id = self.glossary.id)
 
-        nGloss = JMdictGlossary.objects.get(id = self.oGloss.id)
-
-        self.assertEqual(nGloss.id, cGloss.id)
-        self.assertEqual(nGloss.gloss, cGloss.gloss)
-        self.assertEqual(nGloss.language, cGloss.language)
-        self.assertEqual(nGloss.type, cGloss.type)
+        self.assertEqual(gloss.id, savedGloss.id)
+        self.assertEqual(gloss.gloss, savedGloss.gloss)
+        self.assertEqual(gloss.language, savedGloss.language)
+        self.assertEqual(gloss.type, savedGloss.type)

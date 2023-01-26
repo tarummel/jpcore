@@ -1,24 +1,23 @@
 from django.test import TestCase
 from jpcore.models import JMdictEntry
 
+
 class JMdictEntryTestCase(TestCase):
-    oEntry = None
 
     def setUp(self):
-        self.oEntry = JMdictEntry.objects.create(ent_seq = 1000000)
-        self.oEntry.save()
+        self.entry = JMdictEntry.objects.create(ent_seq = 1000000)
 
     def test_create(self):
-        cEntry = JMdictEntry.objects.get(ent_seq = self.oEntry.ent_seq)
-        self.assertEqual(cEntry, self.oEntry)
+        cEntry = JMdictEntry.objects.get(ent_seq = self.entry.ent_seq)
+        self.assertEqual(cEntry, self.entry)
 
     def test_uneditable(self):
-        cEntry = JMdictEntry.objects.get(ent_seq = self.oEntry.ent_seq)
+        savedEntry = JMdictEntry.objects.get(ent_seq = self.entry.ent_seq)
 
-        cEntry.ent_seq = 99999999
-        cEntry.save()
+        savedEntry.ent_seq = 99999999
+        savedEntry.save()
 
-        nEntry = JMdictEntry.objects.get(ent_seq = self.oEntry.ent_seq)
+        entry = JMdictEntry.objects.get(ent_seq = self.entry.ent_seq)
 
-        self.assertNotEqual(nEntry, cEntry)
-        self.assertEqual(nEntry, self.oEntry)
+        self.assertNotEqual(entry, savedEntry)
+        self.assertEqual(entry, self.entry)
