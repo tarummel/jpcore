@@ -5,6 +5,7 @@ from django.views.decorators.http import require_GET
 from jpcore.models import Kanji, Radical
 from jpcore.serializers import KanjiSerializer, RadicalSerializer
 
+
 NO_KANJI_FIELDS = ['number', 'radical', 'strokes', 'meaning', 'reading', 'frequency', 'position', 'notes']
 
 def success(code, data):
@@ -18,6 +19,19 @@ def error(code, reason = None):
 # returns all Radicals
 @require_GET
 def list(request):
+    option = request.GET.get('option', '')
+
+    if option == 'strokes':
+        output = {}
+        queryset = Radical.objects.all().values('strokes', 'radical')
+        
+        for row in queryset.iterator():
+            strokes, radical = row['strokes'], row['radical']
+            if not strokes in output:
+                output[strokes] = ''
+            output[strokes] += radical
+        return success(HTTPStatus.OK, output)
+
     queryset = Radical.objects.all()
     serializer = RadicalSerializer(queryset, many = True, fields = NO_KANJI_FIELDS)
     return success(HTTPStatus.OK, serializer.data)

@@ -64,6 +64,24 @@ class RadicalViewsTestCase(TestCase):
         self.assertFalse('id' in r3)
         self.assertFalse('kanji_set' in r3)
 
+    def test_list_option_stroke_count(self):
+        exRad1 = Radical.objects.create(number = 4, radical = '𠂉', strokes = 2, meaning = 'bend, possessive particle no', reading = 'の, no, ノ', frequency = 381, notes = '')
+        exRad2 = Radical.objects.create(number = 5, radical = '九', strokes = 2, meaning = 'second, latter', reading = 'おつ, otsu, 乙', frequency = 63, notes = '')
+
+        url = self.helper.listRadicalsUrl()
+        response = self.client.get(url, {'option': 'strokes'})
+        
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+        
+        json = JSON.loads(response.content)
+        self.assertEqual(json['status'], 'success')
+
+        data = json['data']
+        c2, c5, c7 = data['2'], data['5'], data['7']
+        self.assertEqual(c2, f'{self.rad1.radical}{exRad1.radical}{exRad2.radical}')
+        self.assertEqual(c5, self.rad2.radical)
+        self.assertEqual(c7, self.rad3.radical)
+
     def test_get_success(self):
         url = self.helper.getRadicalUrl(self.rad1.radical)
         response = self.client.get(url)
