@@ -80,9 +80,9 @@ class RadicalViewsTestCase(TestCase):
         self.assertEqual(len(data), 3)
         
         c2, c5, c7 = data['2'], data['5'], data['7']
-        self.assertEqual(c2, f'{self.rad1.radical}{exRad1.radical}{exRad2.radical}')
-        self.assertEqual(c5, self.rad2.radical)
-        self.assertEqual(c7, self.rad3.radical)
+        self.assertEqual(c2, [self.rad1.radical, exRad1.radical, exRad2.radical])
+        self.assertEqual(c5, [self.rad2.radical])
+        self.assertEqual(c7, [self.rad3.radical])
 
     def test_get_success(self):
         url = self.helper.getRadicalUrl(self.rad1.radical)
@@ -176,8 +176,8 @@ class RadicalViewsTestCase(TestCase):
         self.assertEqual(len(data), 2)
 
         b5, b7 = data['5'], data['7']
-        self.assertEqual(b5, self.oneRadKan.kanji)
-        self.assertEqual(b7, self.manyRadKan.kanji)
+        self.assertEqual(b5, [self.oneRadKan.kanji])
+        self.assertEqual(b7, [self.manyRadKan.kanji])
 
     def test_get_kanji_not_found(self):
         url = self.helper.getKanjiByRadicalUrl('')

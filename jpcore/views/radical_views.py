@@ -28,8 +28,8 @@ def list(request):
         for row in queryset.iterator():
             strokes, radical = row['strokes'], row['radical']
             if not strokes in output:
-                output[strokes] = ''
-            output[strokes] += radical
+                output[strokes] = []
+            output[strokes].append(radical)
         return success(HTTPStatus.OK, output)
 
     queryset = Radical.objects.all()
@@ -72,8 +72,8 @@ def getKanjiByRadical(request, radicals):
             for row in queryset.iterator():
                 strokes, kanji = row.strokes, row.kanji
                 if not strokes in output:
-                    output[strokes] = ''
-                output[strokes] += kanji
+                    output[strokes] = []
+                output[strokes].append(kanji)
             return success(HTTPStatus.OK, output)
         
         serializer = KanjiSerializer(queryset, many = True, fields = ['kanji', 'strokes'])
