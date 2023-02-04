@@ -21,7 +21,7 @@ def error(code, reason = None):
 def list(request):
     option = request.GET.get('option', '')
 
-    if option == 'strokes':
+    if option == 'by_stroke_count':
         output = {}
         queryset = Radical.objects.all().values('strokes', 'radical')
         
@@ -55,6 +55,7 @@ def get(request, radical):
 def getKanjiByRadical(request, radicals):
     valid = True
     split = radicals.split(',')
+    option = request.GET.get('option', '')
 
     for s in split:
         if len(s) != 1:
@@ -62,8 +63,18 @@ def getKanjiByRadical(request, radicals):
             
     if valid:
         queryset = Kanji.objects.filter(radicals__radical__in = split).distinct()
+
         if not len(queryset):
             return error(HTTPStatus.NOT_FOUND, 'no kanji found')
+        
+        if option == 'by_stroke_count':
+            output = {}
+            for row in queryset.iterator():
+                strokes, kanji = row.strokes, row.kanji
+                if not strokes in output:
+                    output[strokes] = ''
+                output[strokes] += kanji
+            return success(HTTPStatus.OK, output)
         
         serializer = KanjiSerializer(queryset, many = True, fields = ['kanji', 'strokes'])
         return success(HTTPStatus.OK, serializer.data)

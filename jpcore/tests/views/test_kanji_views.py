@@ -179,7 +179,6 @@ class KanjiViewsTestCase(TestCase):
 
     def test_get_not_found(self):
         url = self.helper.getKanjiUrl('')
-        print(url)
         response = self.client.get(url)
         self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
 

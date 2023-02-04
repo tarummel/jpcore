@@ -69,7 +69,7 @@ class RadicalViewsTestCase(TestCase):
         exRad2 = Radical.objects.create(number = 5, radical = '九', strokes = 2, meaning = 'second, latter', reading = 'おつ, otsu, 乙', frequency = 63, notes = '')
 
         url = self.helper.listRadicalsUrl()
-        response = self.client.get(url, {'option': 'strokes'})
+        response = self.client.get(url, {'option': 'by_stroke_count'})
         
         self.assertEqual(response.status_code, HTTPStatus.OK)
         
@@ -77,6 +77,8 @@ class RadicalViewsTestCase(TestCase):
         self.assertEqual(json['status'], 'success')
 
         data = json['data']
+        self.assertEqual(len(data), 3)
+        
         c2, c5, c7 = data['2'], data['5'], data['7']
         self.assertEqual(c2, f'{self.rad1.radical}{exRad1.radical}{exRad2.radical}')
         self.assertEqual(c5, self.rad2.radical)
@@ -159,6 +161,23 @@ class RadicalViewsTestCase(TestCase):
         self.assertEqual(kan1['strokes'], self.oneRadKan.strokes)
         self.assertEqual(kan2['kanji'], self.manyRadKan.kanji)
         self.assertEqual(kan2['strokes'], self.manyRadKan.strokes)
+
+    def test_get_kanji_option_stroke_count(self):
+        radicals = ','.join([self.rad1.radical, self.rad2.radical, self.rad3.radical])
+        url = self.helper.getKanjiByRadicalUrl(radicals)
+        response = self.client.get(url, {'option': 'by_stroke_count'})
+        
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+        
+        json = JSON.loads(response.content)
+        self.assertEqual(json['status'], 'success')
+
+        data = json['data']
+        self.assertEqual(len(data), 2)
+
+        b5, b7 = data['5'], data['7']
+        self.assertEqual(b5, self.oneRadKan.kanji)
+        self.assertEqual(b7, self.manyRadKan.kanji)
 
     def test_get_kanji_not_found(self):
         url = self.helper.getKanjiByRadicalUrl('')
