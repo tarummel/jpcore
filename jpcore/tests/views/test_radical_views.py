@@ -69,7 +69,7 @@ class RadicalViewsTestCase(TestCase):
         exRad2 = Radical.objects.create(number = 5, radical = '九', strokes = 2, meaning = 'second, latter', reading = 'おつ, otsu, 乙', frequency = 63, notes = '')
 
         url = self.helper.listRadicalsUrl()
-        response = self.client.get(url, {'option': 'by_stroke_count'})
+        response = self.client.get(url, {'simple': 'true'})
         
         self.assertEqual(response.status_code, HTTPStatus.OK)
         
@@ -131,7 +131,7 @@ class RadicalViewsTestCase(TestCase):
         self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
 
     def test_get_kanji_success(self):
-        url = self.helper.getKanjiByRadicalUrl(self.rad2.radical)
+        url = self.helper.getKanjiFromRadicalsUrl(self.rad2.radical)
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, HTTPStatus.OK)
@@ -145,7 +145,7 @@ class RadicalViewsTestCase(TestCase):
 
     def test_get_kanji_multiple(self):
         radicals = ','.join([self.rad1.radical, self.rad2.radical, self.rad3.radical])
-        url = self.helper.getKanjiByRadicalUrl(radicals)
+        url = self.helper.getKanjiFromRadicalsUrl(radicals)
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, HTTPStatus.OK)
@@ -154,18 +154,14 @@ class RadicalViewsTestCase(TestCase):
         self.assertEqual(json['status'], 'success')
 
         data = json['data']
-        self.assertEqual(len(data), 2)
-
-        kan1, kan2 = data[0], data[1]
-        self.assertEqual(kan1['kanji'], self.oneRadKan.kanji)
-        self.assertEqual(kan1['strokes'], self.oneRadKan.strokes)
-        self.assertEqual(kan2['kanji'], self.manyRadKan.kanji)
-        self.assertEqual(kan2['strokes'], self.manyRadKan.strokes)
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['kanji'], self.manyRadKan.kanji)
+        self.assertEqual(data[0]['strokes'], self.manyRadKan.strokes)
 
     def test_get_kanji_option_stroke_count(self):
         radicals = ','.join([self.rad1.radical, self.rad2.radical, self.rad3.radical])
-        url = self.helper.getKanjiByRadicalUrl(radicals)
-        response = self.client.get(url, {'option': 'by_stroke_count'})
+        url = self.helper.getKanjiFromRadicalsUrl(radicals)
+        response = self.client.get(url, {'simple': 'true'})
         
         self.assertEqual(response.status_code, HTTPStatus.OK)
         
@@ -173,34 +169,109 @@ class RadicalViewsTestCase(TestCase):
         self.assertEqual(json['status'], 'success')
 
         data = json['data']
-        self.assertEqual(len(data), 2)
-
-        b5, b7 = data['5'], data['7']
-        self.assertEqual(b5, [self.oneRadKan.kanji])
-        self.assertEqual(b7, [self.manyRadKan.kanji])
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data['7'], [self.manyRadKan.kanji])
 
     def test_get_kanji_not_found(self):
-        url = self.helper.getKanjiByRadicalUrl('')
+        url = self.helper.getKanjiFromRadicalsUrl('')
         response = self.client.get(url)
         self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
 
-        url = self.helper.getKanjiByRadicalUrl('')
+        url = self.helper.getKanjiFromRadicalsUrl('')
         response = self.client.get(url)
         self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
 
-        url = self.helper.getKanjiByRadicalUrl('几')
+        url = self.helper.getKanjiFromRadicalsUrl('几')
         response = self.client.get(url)
         self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
 
-        url = self.helper.getKanjiByRadicalUrl(1)
+        url = self.helper.getKanjiFromRadicalsUrl(1)
         response = self.client.get(url)
         self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
 
     def test_get_kanji_bad_request(self):
-        url = self.helper.getKanjiByRadicalUrl(None)
+        url = self.helper.getKanjiFromRadicalsUrl(None)
         response = self.client.get(url)
         self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
 
-        url = self.helper.getKanjiByRadicalUrl('still too long')
+        url = self.helper.getKanjiFromRadicalsUrl('still too long')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+    def test_get_related_radicals(self):
+        radicals = ','.join([self.rad2.radical])
+        url = self.helper.getRelatedRadicalsUrl(radicals)
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+
+        json = JSON.loads(response.content)
+        self.assertEqual(json['status'], 'success')
+
+        data = json['data']
+        self.assertEqual(len(data), 2)
+
+        r1, r3 = data[0], data[1]
+        self.assertEqual(r1['number'], self.rad1.number)
+        self.assertEqual(r1['radical'], self.rad1.radical)
+        self.assertEqual(r1['strokes'], self.rad1.strokes)
+        self.assertEqual(r1['meaning'], self.rad1.meaning)
+        self.assertEqual(r1['reading'], self.rad1.reading)
+        self.assertEqual(r1['frequency'], self.rad1.frequency)
+        self.assertEqual(r1['notes'], self.rad1.notes)
+
+        self.assertEqual(r3['number'], self.rad3.number)
+        self.assertEqual(r3['radical'], self.rad3.radical)
+        self.assertEqual(r3['strokes'], self.rad3.strokes)
+        self.assertEqual(r3['meaning'], self.rad3.meaning)
+        self.assertEqual(r3['reading'], self.rad3.reading)
+        self.assertEqual(r3['frequency'], self.rad3.frequency)
+        self.assertEqual(r3['notes'], self.rad3.notes)
+
+    def test_get_related_radicals_simple(self):
+        radicals = ','.join([self.rad2.radical])
+        url = self.helper.getRelatedRadicalsUrl(radicals)
+        response = self.client.get(url, {'simple': 'true'})
+        
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+
+        json = JSON.loads(response.content)
+        self.assertEqual(json['status'], 'success')
+
+        data = json['data']
+        self.assertEqual(len(data), 2)
+        self.assertEqual(data, f'{self.rad1.radical}{self.rad3.radical}')
+
+    def test_get_related_not_found(self):
+        url = self.helper.getRelatedRadicalsUrl('a')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
+
+        url = self.helper.getRelatedRadicalsUrl('序')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
+
+        url = self.helper.getRelatedRadicalsUrl(1)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
+
+        url = self.helper.getRelatedRadicalsUrl('')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
+
+    def test_get_related_bad_request(self):
+        url = self.helper.getRelatedRadicalsUrl(None)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+        url = self.helper.getRelatedRadicalsUrl('a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+        url = self.helper.getRelatedRadicalsUrl('wrong')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+        url = self.helper.getRelatedRadicalsUrl('wrong,again')
         response = self.client.get(url)
         self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)

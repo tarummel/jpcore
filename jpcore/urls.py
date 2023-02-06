@@ -10,7 +10,8 @@ urlpatterns = [
     path('api/', include([
         path('radicals/', views.radical_views.list),
         path('radicals/<str:radical>/', views.radical_views.get),
-        path('radicals/<str:radicals>/kanji/', views.radical_views.getKanjiByRadical),
+        path('radicals/<str:radicals>/kanji/', views.radical_views.getKanjiFromRadicals),
+        path('radicals/<str:radicals>/related/', views.radical_views.getRelatedRadicals),
         path('kanji/<str:kanji>/', views.kanji_views.get),
     ])),
 ]
