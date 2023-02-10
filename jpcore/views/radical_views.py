@@ -70,6 +70,9 @@ def getKanjiFromRadicals(request, radicals):
         c = Count('radicals', filter=Q(radicals__radical__in=split))).filter(c=len(split)
     ).order_by('strokes')[0:PAGE_LIMIT]
     
+    if not len(queryset):
+        return error(HTTPStatus.NOT_FOUND, 'no matching entry found')
+
     if request.GET.get('simple', None):
         output = {}
         for row in queryset.iterator():
@@ -98,6 +101,9 @@ def getRelatedRadicals(request, radicals):
     queryset = Radical.objects.filter(
         kanji__in = Kanji.objects.annotate(c = Count('radicals', filter=Q(radicals__radical__in=split))).filter(c = len(split))
     ).exclude(radical__in = split).distinct().order_by('strokes')
+
+    if not len(queryset):
+        return error(HTTPStatus.NOT_FOUND, 'no matching entry found')
 
     if request.GET.get('simple', None):
         output = []

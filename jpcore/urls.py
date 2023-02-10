@@ -12,6 +12,7 @@ urlpatterns = [
         path('radicals/<str:radical>/', views.radical_views.get),
         path('radicals/<str:radicals>/kanji/', views.radical_views.getKanjiFromRadicals),
         path('radicals/<str:radicals>/related/', views.radical_views.getRelatedRadicals),
-        path('kanji/<str:kanji>/', views.kanji_views.get),
+        path('kanji/<int:id>/', views.kanji_views.getById),
+        path('kanji/<str:kanji>/', views.kanji_views.getByCharacter),
     ])),
 ]

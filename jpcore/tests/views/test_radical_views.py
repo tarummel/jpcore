@@ -240,7 +240,7 @@ class RadicalViewsTestCase(TestCase):
 
         data = json['data']
         self.assertEqual(len(data), 2)
-        self.assertEqual(data, f'{self.rad1.radical}{self.rad3.radical}')
+        self.assertEqual(data, [self.rad1.radical, self.rad3.radical])
 
     def test_get_related_not_found(self):
         url = self.helper.getRelatedRadicalsUrl('a')
