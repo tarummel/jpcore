@@ -1,12 +1,12 @@
 No	Radical	Strokes	Meaning	Reading	Position	Frequency	Notes
 1	一	1	one	いち, ichi, 一		2714	
-2	｜	1	line, stick	ぼう, bō, 棒		1640	
+2	｜	1	line, stick	line, stick		1640	
 3	丶	1	dot	てん, ten, 点		1021	
 4	ノ	1	bend, possessive particle no	の, no, ノ		1870	
-4	𠂉	2	bend, possessive particle no	の, no, ノ		381	
 5	乙	1	second, latter	おつ, otsu, 乙		319	
-5	九	2	second, latter	おつ, otsu, 乙		63	Variant of 乙
 6	亅	1	hook, hooked stick	はねぼう, hanebō, 撥棒		351	
+4	𠂉	2	bend, possessive particle no	の, no, ノ	left	381	
+5	九	2	second, latter	おつ, otsu, 乙		63	Variant of 乙
 7	二	2	two	に, ni, 二		1052	
 8	亠	2	pot lid	なべぶた, nabebuta, 鍋蓋	top	760	
 9	人	2	human	ひと, hito, 人		481	
@@ -19,7 +19,7 @@ No	Radical	Strokes	Meaning	Reading	Position	Frequency	Notes
 13	冂	2	inverted box, window frame	まきがまえ, makigamae, 牧構	enclose	727	
 14	冖	2	cover, wa crown	わかんむり, wakanmuri, ワ冠	top	492	
 15	冫	2	ice, 2-stroke water	にすい, nisui, 二水	left	259	
-16	几	2	desk	つくえ, tsukue, 机		208	
+16	几	2	desk	つくえ, tsukue, 机	right	208	
 17	凵	2	container, inbox	うけばこ, ukebako, 受け箱	bottom	210	
 18	刀	2	sword	かたな, katana, 刀		204	
 18	⺉	2	sword	かたな, katana, 刀	right	188	Variant of 刀
@@ -27,15 +27,17 @@ No	Radical	Strokes	Meaning	Reading	Position	Frequency	Notes
 20	勹	2	embrace, wrap frame	つつみがまえ, tsutsumigamae, 包構	top right	587	
 21	匕	2	spoon hi	さじのひ, sajinohi, 匕のヒ	right	477	
 22	匚	2	box frame	はこがまえ, hakogamae, 匚構	enclose	176	
-23	亡	3	dead, hiding frame	かくしがまえ, kakushigamae, 隠構	enclose	35	
 24	十	2	ten, complete	じゅう, jū, 十		878	
 25	卜	2	divination to	ぼくのと, bokunoto, 卜のト		279	
 26	卩	2	seal	ふしづくり, fushidzukuri, 節旁	right	131	
 27	厂	2	cliff	がんだれ, gandare, 雁垂	top left	416	
 28	厶	2	private	む, mu		572	
 29	又	2	again, right hand	また, mata		480	
+	マ	2				98	
+	ユ	2				43	
+	乃	2				41	
+23	亡	3	dead, hiding frame	かくしがまえ, kakushigamae, 隠構	enclose	35	
 30	口	3	mouth, opening	くち, kuchi		2839	
-30	品	9	mouth, opening	くち, kuchi		27	Variant of 口
 31	囗	3	enclosure	くにがまえ, kunigamae, 国構	enclose	188	
 32	土	3	earth	つち, tsuchi		938	
 33	士	3	scholar, bachelor	さむらい, samurai, 侍		204	
@@ -50,7 +52,6 @@ No	Radical	Strokes	Meaning	Reading	Position	Frequency	Notes
 42	小	3	small, insignificant	ちいさい, chīsai, 小さい		682	
 42	⺌	3	small, insignificant	ちいさい, chīsai, 小さい	top	170	Variant of 小
 43	尢	3	lame	まげあし, mageashi		40	
-43	尤	4	lame	まげあし, mageashi		19	Variant of 尢
 44	尸	3	corpse	しかばね, shikabane, 屍	top left	289	
 45	屮	3	sprout	てつ, tetsu		45	
 46	山	3	mountain	やま, yama		324	
@@ -64,18 +65,28 @@ No	Radical	Strokes	Meaning	Reading	Position	Frequency	Notes
 53	广	3	dotted cliff	まだれ, madare, 麻垂	top left	237	
 54	廴	3	long stride	いんにょう, innyō, 延繞	bottom left	41	
 55	廾	3	two hands, twenty	にじゅうあし, nijūashi, 二十脚		286	
-56	弋	3	ceremony, shoot, arrow	しきがまえ, shikigamae, 式構		54	
+56	弋	3	ceremony, shoot, arrow	しきがまえ, shikigamae, 式構	enclose	54	
 57	弓	3	bow	ゆみ, yumi		147	
 58	ヨ	3	pig's head	けいがしら, keigashira, 彑頭		296	
 58	彑	3	pig's head	けいがしら, keigashira, 彑頭		28	Variant of 彐
 59	彡	3	hair, bristle, stubble, beard	さんづくり, sandzukuri, 三旁	right	175	
 60	彳	3	step	ぎょうにんべん, gyouninben, 行人偏	left	129	
-61	心	4	heart	りっしんべん, risshinben, 立心偏		325	
 61	⺖	3	heart	りっしんべん, risshinben, 立心偏	left	261	Variant of 心
-62	戈	4	spear, halberd	かのほこ, kanohoko		267	
+64	扌	3	hand	て, te	left	440	Variant of 手
+85	⺡	3	water	みず, mizu	left	659	Variant of 水
+94	⺨	3	dog	いぬ, inu	left	123	Variant of 犬
+140	⺾	3	grass, vegetation	くさ, kusa, 草	top	823	
+162	⻌	3	walk	しんにゅう, shinnyū, 之繞	bottom left	239	
+163	⻏	3	town	むら, mura	right	144	Variant of 邑, right position only, not to be confused with #170
+170	⻖	3	mound, dam	ぎふのふ, gifunofu, 岐阜の阜	left	135	LEFT
+	久	3				8	
+	也	3				34	
+	及	3				17	
+43	尤	4	lame	まげあし, mageashi		19	Variant of 尢
+61	心	4	heart	りっしんべん, risshinben, 立心偏		325	
+62	戈	4	spear, halberd	かのほこ, kanohoko	enclose	267	
 63	戸	4	door, house	とびらのと, tobiranoto		72	
 64	手	4	hand	て, te		52	
-64	扌	3	hand	て, te	left	440	Variant of 手
 65	支	4	branch	しにょう, shinyō, 支繞		56	
 66	攵	4	strike, whip	のぶん, nobun, ノ文	right	221	
 67	文	4	script, literature	ぶん, bun		34	
@@ -83,7 +94,6 @@ No	Radical	Strokes	Meaning	Reading	Position	Frequency	Notes
 69	斤	4	axe	おの, ono, 斧		128	
 70	方	4	way, square, raft	ほう, hō		131	
 71	无	4	have not	むにょう, munyō		21	
-71	無	12	have not	むにょう, munyō		15	Variant of 无
 72	日	4	sun, day	にち, nichi		1329	
 73	曰	4	say	いわく, iwaku		140	
 74	月	4	moon, month; body, flesh	つき, tsuki		667	
@@ -93,13 +103,11 @@ No	Radical	Strokes	Meaning	Reading	Position	Frequency	Notes
 78	歹	4	death, decay	がつへん, gatsuhen, 歹偏		57	
 79	殳	4	weapon, lance	ほこつくり, hokotsukuri	right	97	
 80	毋	4	do not; mother	なかれ-nakare; はは, haha		34	
-80	母	5	do not; mother	なかれ-nakare; はは, haha		34	Variant of 毋
 81	比	4	compare, compete	くらべる, kuraberu		122	
 82	毛	4	fur, hair	け, ke		19	
 83	氏	4	clan	うじ, uji		93	
 84	气	4	steam, breath	きがまえ, kigamae, 気構	top right	17	
 85	水	4	water	みず, mizu		130	
-85	⺡	3	water	みず, mizu	left	659	Variant of 水
 86	火	4	fire	ひ, hi		246	
 86	⺣	4	fire	ひ, hi	bottom	635	Variant of 火
 87	爪	4	claw, nail, talon	つめ, tsume		181	
@@ -110,9 +118,17 @@ No	Radical	Strokes	Meaning	Reading	Position	Frequency	Notes
 92	牙	4	fang	きばへん, kibahen, 牙偏		31	
 93	牛	4	cow	うし, ushi		93	
 94	犬	4	dog	いぬ, inu		65	
-94	⺨	3	dog	いぬ, inu	left	123	Variant of 犬
-95	玄	5	dark, profound	げん, gen		41	
 96	王	4	king; ball, jade	おう-ō; たま, tama		458	
+113	⺭	4	altar, display	しめす, shimesu	left	76	Variant of 示
+125	⺹	4	old	ろう, rō	top	82	
+	五	4				25	
+	井	4				21	
+	元	4				42	
+	勿	4				97	
+	屯	4				24	
+	巴	4				53	
+80	母	5	do not; mother	なかれ-nakare; はは, haha		34	Variant of 毋
+95	玄	5	dark, profound	げん, gen		41	
 97	瓜	5	melon	うり, uri		25	
 98	瓦	5	tile	かわら, kawara		19	
 99	甘	5	sweet	あまい, amai		83	
@@ -121,7 +137,7 @@ No	Radical	Strokes	Meaning	Reading	Position	Frequency	Notes
 102	田	5	field	た, ta		871	
 103	疋	5	bolt of cloth	ひき, hiki		80	
 104	⽧	5	sickness	やまいだれ, yamaidare, 病垂	top left	152	
-105	癶	5	footsteps	はつがしら, hatsugashira, 発頭	top left	34	
+105	癶	5	footsteps	はつがしら, hatsugashira, 発頭	top	34	
 106	白	5	white	しろ, shiro		197	
 107	皮	5	skin	けがわ, kegawa, 毛皮		23	
 108	皿	5	dish	さら, sara		171	
@@ -130,44 +146,44 @@ No	Radical	Strokes	Meaning	Reading	Position	Frequency	Notes
 111	矢	5	arrow	や, ya		93	
 112	石	5	stone	いし, ishi		186	
 113	示	5	altar, display	しめす, shimesu		92	
-113	⺭	4	altar, display	しめす, shimesu		76	Variant of 示
 114	⽱	5	track	ぐうのあし, gūnoashi		55	
 115	禾	5	two-branch tree	のぎ, nogi, ノ木		258	
 116	穴	5	cave	あな, ana		51	
 117	立	5	stand, erect	たつ, tatsu		341	
-118	竹	6	bamboo	たけ, take		247	
+122	⺲	5	net	あみがしら, amigashira, 網頭	top	206	
+145	⻂	5	clothes	ころも, koromo	left	124	Variant of 衣
+	世	5				37	
+	冊	5				55	
+	巨	5				9	
+118	竹	6	bamboo	たけ, take	top	247	
 119	米	6	rice	こめ, kome		222	
 120	糸	6	thread, string	いと, ito		381	
 121	缶	6	can, earthenware jar	かん, kan		45	
-122	⺲	5	net	あみがしら, amigashira, 網頭	top	206	
 123	羊	6	sheep	ひつじ, hitsuji		119	
 124	羽	6	feather, wing	はね, hane		120	
-125	⺹	4	old	ろう, rō	top	82	
 126	而	6	rake, beard	しかして, shikashite		57	
 127	耒	6	plow	らいすき, raisuki		26	
 128	耳	6	ear	みみ, mimi		133	
 129	聿	6	brush	ふでづくり, fudezukuri, 聿旁		49	
 130	肉	6	meat	にく, niku		10	
-131	臣	7	minister, official	しん, shin		68	
 132	自	6	oneself	みずから, mizukara		81	
 133	至	6	arrive	いたる, itaru		45	
 134	臼	6	mortar	うす, usu		126	
 135	舌	6	tongue	した, shita		33	
-136	舛	7	opposite	ます, masu		37	
 137	舟	6	boat	ふね, fune		59	
 138	艮	6	stopping	うしとら, ushitora, 丑寅		84	
 139	色	6	colour, prettiness	いろ, iro		13	
-140	⺾	3	grass, vegetation	くさ, kusa, 草	top	823	
-141	虍	6	tiger	とらかんむり, torakanmuri, 虎冠		110	
-142	虫	6	insect	むし, mushi		389	
+141	虍	6	tiger	とらかんむり, torakanmuri, 虎冠	top left	110	
+142	虫	6	insect	むし, mushi	left	389	
 143	血	6	blood	ち, chi		16	
 144	行	6	go, do	ぎょう, gyō	enclose	34	
 145	衣	6	clothes	ころも, koromo		169	
-145	⻂	5	clothes	ころも, koromo		124	Variant of 衣
 146	西	6	west	にし, nishi		93	
+131	臣	7	minister, official	しん, shin		68	
+136	舛	7	opposite	ます, masu		37	
 147	見	7	see	みる, miru		70	
 148	角	7	horn	つの, tsuno		43	
-149	言	7	speech	こと, koto		351	
+149	言	7	speech	こと, koto	left	351	
 150	谷	7	valley	たに, tani		33	
 151	豆	7	bean	まめ, mame		135	
 152	豕	7	pig	いのこ, inoko, 猪子		103	
@@ -175,26 +191,29 @@ No	Radical	Strokes	Meaning	Reading	Position	Frequency	Notes
 154	貝	7	shell	かい, kai		430	
 155	赤	7	red, bare	あか, aka		21	
 156	走	7	run	はしる, hashiru		39	
-157	足	7	foot	あし, ashi		161	
+157	足	7	foot	あし, ashi	left	161	
 158	身	7	body	み, mi		28	
-159	車	7	cart, car	くるま, kuruma		184	
+159	車	7	cart, car	くるま, kuruma	left	184	
 160	辛	7	spicy, bitter	からい, karai		81	
 161	辰	7	morning	しんのたつ, shinnotatsu, 辰のたつ		38	
-162	⻌	3	walk	しんにゅう, shinnyū, 之繞	bottom left	239	
 163	邑	7	town	むら, mura		1	
-163	⻏	3	town	むら, mura	right	144	Variant of 邑, right position only, not to be confused with #170
 164	酉	7	sake (rice-based alcoholic beverage)	とり, tori		117	
 165	釆	7	divide, distinguish, choose	のごめ, nogome, ノ米		33	
 166	里	7	village, mile	さと, sato		101	
-167	金	8	metal, gold	かね, kane		445	
+199	麦	7	wheat	むぎ, mugi, 麦		4	
+167	金	8	metal, gold	かね, kane	left	445	
 168	長	8	long, grow; leader	ながい-nagai; ちょう, chō		70	
 169	門	8	gate	もん, mon	enclose	132	
-170	⻖	3	mound, dam	ぎふのふ, gifunofu, 岐阜の阜	left	135	LEFT
 171	隶	8	slave, capture	れいづくり, reidzukuri, 隷旁		23	
 172	隹	8	old bird	ふるとり, furutori, 古鳥		255	
 173	雨	8	rain	あめ, ame	top	123	
 174	青	8	green, blue	あお, ao		31	
 175	非	8	wrong	あらず, arazu		45	
+210	斉	8	even, uniformly 	せい, sei, 斉		5	Variant of 齊
+	免	8				25	
+	奄	8				16	
+	岡	8				7	
+30	品	9	mouth, opening	くち, kuchi		27	Variant of 口
 176	面	9	face	めん, men		12	
 177	革	9	leather, rawhide	かくのかわ, kakunokawa		91	
 178	韋	9	tanned leather	なめしがわ, nameshigawa		35	
@@ -203,7 +222,7 @@ No	Radical	Strokes	Meaning	Reading	Position	Frequency	Notes
 181	頁	9	big shell	おおがい, ōgai, 大貝		124	
 182	風	9	wind	かぜ, kaze		29	
 183	飛	9	fly	とぶ, tobu		2	
-184	食	9	eat, food	しょく, shoku		47	
+184	食	9	eat, food	しょく, shoku	left	47	
 185	首	9	neck, head	くび, kubi		12	
 186	香	9	fragrant	においこう, nioikō		4	
 187	馬	10	horse	うま, uma		131	
@@ -214,43 +233,24 @@ No	Radical	Strokes	Meaning	Reading	Position	Frequency	Notes
 192	鬯	10	herbs, sacrificial wine	ちょう, chō		2	
 193	鬲	10	tripod, cauldron	かなえ, kanae		22	
 194	鬼	10	ghost, demon	おに, oni		38	
-195	魚	11	fish	うお, uo		205	
+212	竜	10	dragon	りゅう, ryū		20	
+195	魚	11	fish	うお, uo	left	205	
 196	鳥	11	bird	とり, tori		198	
 197	鹵	11	salt	ろ, ro		9	
 198	鹿	11	deer	しか, shika		54	
-199	麦	7	wheat	むぎ, mugi, 麦		4	
 200	麻	11	hemp, flax	あさ, asa		21	
 201	黄	11	yellow	きいろ, kīro, 黄色		29	
-202	黍	12	millet	きび, kibi		5	
 203	黒	11	black	くろ, kuro		38	
+213	亀	11	turtle, tortoise	かめ, kame		9	
+	啇	11				12	
+71	無	12	have not	むにょう, munyō		15	Variant of 无
+202	黍	12	millet	きび, kibi		5	
 204	黹	12	embroidery, needlework	ふつ, futsu, 黻		3	
+211	歯	12	tooth, molar	は, ha		35	
 205	黽	13	frog, amphibian	べん, ben		12	
 206	鼎	13	sacrificial tripod	かなえ, kanae		5	
 207	鼓	13	drum	つづみ, tsudzumi		11	
 208	鼠	13	rat, mouse	ねずみ, nezumi		20	
 209	鼻	14	nose	はな, hana		17	
 210	齊	14	even, uniformly 	せい, sei, 斉		18	
-210	斉	8	even, uniformly 	せい, sei, 斉		5	Variant of 齊
-211	歯	12	tooth, molar	は, ha		35	
-212	竜	10	dragon	りゅう, ryū		20	
-213	亀	11	turtle, tortoise	かめ, kame		9	
 214	龠	17	flute	やく, yaku		12	
-	マ	2				98	
-	ユ	2				43	
-	乃	2				41	
-	也	3				34	
-	及	3				17	
-	久	3				8	
-	元	4				42	
-	井	4				21	
-	勿	4				97	
-	五	4				25	
-	屯	4				24	
-	巴	4				53	
-	世	5				37	
-	巨	5				9	
-	冊	5				55	
-	奄	8				16	
-	岡	8				7	
-	免	8				25	
-	啇	11				12	
