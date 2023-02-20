@@ -1,2 +1,3 @@
 from .test_seed_jmdict import SeedJMdictHelperTestCase
+from .test_seed_kanjidict import SeedKanjiDictHelperTestCase
 from .test_seed_krad import SeedKradHelperTestCase
