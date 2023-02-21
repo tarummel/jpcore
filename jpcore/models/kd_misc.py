@@ -12,7 +12,7 @@ class KDMisc(models.Model):
     # 9 indicates it is a Jinmeiyou (for use in names) kanji which in addition to the Jouyou kanji are approved for use 
     #   in family name registers and other official documents. 
     # 10 also indicates a Jinmeiyou kanji which is a variant of a Jouyou kanji.
-    grade = models.TextField()
+    grade = models.TextField(blank = True)
 
     # The (former) Japanese Language Proficiency test level for this kanji. Values range from 1 (most advanced) to 
     # 4 (most elementary). This field does not appear for kanji that were not required for any JLPT level.
@@ -28,10 +28,10 @@ class KDMisc(models.Model):
     # A frequency-of-use ranking. The 2,500 most-used characters have a ranking; those characters that lack this field 
     # are not ranked. The frequency is a number from 1 to 2,500 that expresses the relative frequency of occurrence of a
     # character in modern Japanese. (Actually there are 2,501 kanji ranked as there was a tie.)
-    frequency = models.TextField()
+    frequency = models.TextField(blank = True)
 
     # When the kanji is itself a radical and has a name, this element contains the name (in hiragana.)
-    radical_name = ArrayField(models.TextField(), blank = True)
+    radical_names = ArrayField(models.TextField(), blank = True)
 
     def __str__(self):
         return f'grade: {self.kanji}, jlpt: {self.jlpt}, strokes: {self.strokes}, freq: {self.frequency}'

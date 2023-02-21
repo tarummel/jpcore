@@ -11,8 +11,8 @@ class KDVariant(models.Model):
     jis208 = models.TextField(blank = True)
     jis212 = models.TextField(blank = True)
     jis213 = models.TextField(blank = True)
-    nelson = models.TextField(blank = True)
-    njecd = models.TextField(blank = True)
+    nelson_c = models.TextField(blank = True)
+    halpern_njecd = models.TextField(blank = True)
     oneill = models.TextField(blank = True)
     sh = models.TextField(blank = True)
 

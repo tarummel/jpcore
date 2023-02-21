@@ -178,11 +178,11 @@ class KanjiViewsTestCase(TestCase):
         self.assertEqual(jso2['waseieigo'], self.source2.waseieigo)
 
     def test_get_by_id_not_found(self):
-        url = self.helper.getEntryByCharacterUrl(1)
+        url = self.helper.getEntryByIdUrl(1)
         response = self.client.get(url)
         self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
 
-        url = self.helper.getEntryByCharacterUrl(123456789)
+        url = self.helper.getEntryByIdUrl(123456789)
         response = self.client.get(url)
         self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
 
