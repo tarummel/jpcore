@@ -2,31 +2,29 @@ from lxml import etree
 
 from jpcore.models import KDKanji, KDCodePoint, KDRadical, KDMisc,  KDVariant, KDIndex, KDQueryCode, KDReading, KDMeaning
 
-PATH = './resources/kanjidic2.xml'
-XML_NAMESPACE = '{http://www.w3.org/XML/1998/namespace}'
+FILE_PATH = './resources/kanjidic2.xml'
 
+# Kanji: 13108
+# Execution time (seconds): 80.92943215370178
 
 class SeedKanjiDictHelper():
 
     def getText(self, xml, element):
-        content = ''
         match = xml.find(element)
         if type(match) == etree._Element:
-            content = match.text
-        return content
+            return match.text
+        return ''
     
     def getList(self, xml, tag):
-        result = []
-        elements = xml.findall(tag)
+        result, elements = [], xml.findall(tag)
         for e in elements:
             result.append(e.text)
         return result
     
     def buildAndSaveKanji(self, xml):
-        saved = KDKanji.objects.create(
+        return KDKanji.objects.create(
             kanji = xml.find('literal').text
         )
-        return saved
 
     def buildAndSaveCodePoint(self, xml, kanji):
         return KDCodePoint.objects.create(
@@ -68,6 +66,13 @@ class SeedKanjiDictHelper():
         )
 
     def buildAndSaveIndex(self, xml, kanji):
+        moroT, moroV, moroP = '', '', ''
+        moro = xml.find('dic_ref[@dr_type="moro"]')
+        if type(moro) == etree._Element:
+            moroT = moro.text
+            moroV = moro.attrib.get('m_vol', 0)
+            moroP = moro.attrib.get('m_page', 0)
+
         return KDIndex.objects.create(
             kanji = kanji,
             busy_people = self.getText(xml, 'dic_ref[@dr_type="busy_people"]'),
@@ -85,9 +90,9 @@ class SeedKanjiDictHelper():
             kanji_in_context = self.getText(xml, 'dic_ref[@dr_type="kanji_in_context"]'),
             kodansha_compact = self.getText(xml, 'dic_ref[@dr_type="derkodansha_compactoo"]'),
             maniette = self.getText(xml, 'dic_ref[@dr_type="maniette"]'),
-            moro = self.getText(xml, 'dic_ref[@dr_type="FILL"]'),
-            moro_volume = self.getText(xml, 'dic_ref[@dr_type="FILL"]'),
-            moro_page = self.getText(xml, 'dic_ref[@dr_type="FILL"]'),
+            moro = moroT,
+            moro_volume = moroV,
+            moro_page = moroP,
             nelson_c = self.getText(xml, 'dic_ref[@dr_type="nelson_c"]'),
             nelson_n = self.getText(xml, 'dic_ref[@dr_type="nelson_n"]'),
             oneill_names = self.getText(xml, 'dic_ref[@dr_type="oneill_names"]'),
@@ -112,35 +117,32 @@ class SeedKanjiDictHelper():
         )
 
     def buildAndSaveReading(self, xml, kanji):
-        path = 'rmgroup'
+        rmgroupXml = xml.find('rmgroup')
         return KDReading.objects.create(
             kanji = kanji, 
-            ch_pinyin = self.getList(xml, f'{path}/reading[@r_type="pinyin"]'),
-            ko_romanized = self.getList(xml, f'{path}/reading[@r_type="korean_r"]'),
-            ko_hangul = self.getList(xml, f'{path}/reading[@r_type="korean_h"]'),
-            vi_chu = self.getList(xml, f'{path}/reading[@r_type="vietnam"]'),
-            ja_on = self.getList(xml, f'{path}/reading[@r_type="ja_on"]'),
-            ja_kun = self.getList(xml, f'{path}/reading[@r_type="ja_kun"]'),
+            ch_pinyin = self.getList(rmgroupXml, 'reading[@r_type="pinyin"]'),
+            ko_romanized = self.getList(rmgroupXml, 'reading[@r_type="korean_r"]'),
+            ko_hangul = self.getList(rmgroupXml, 'reading[@r_type="korean_h"]'),
+            vi_chu = self.getList(rmgroupXml, 'reading[@r_type="vietnam"]'),
+            ja_on = self.getList(rmgroupXml, 'reading[@r_type="ja_on"]'),
+            ja_kun = self.getList(rmgroupXml, 'reading[@r_type="ja_kun"]'),
             ja_nanori = self.getList(xml, 'nanori')
         )
 
     def buildAndSaveMeaning(self, xml, kanji):
+        # english is implicit all others are explicit
         return KDMeaning.objects.create(
             kanji = kanji, 
-            en = self.getList(xml, 'meaning')
+            en = [m.text for m in xml.findall('meaning') if not m.attrib]
         )
 
     def handle(self):
-        
         count = 0
-        
         xmlp = etree.XMLParser(encoding="utf-8")
-        tree = etree.parse(f'{PATH}', parser = xmlp)
+        tree = etree.parse(f'{FILE_PATH}', parser = xmlp)
         xmlRoot = tree.getroot()
 
         for character in xmlRoot.iter('character'):
-            print(f'character: {character}')
-            count += 1
             key = self.buildAndSaveKanji(character)
 
             codePoint = character.find('codepoint')
@@ -156,15 +158,19 @@ class SeedKanjiDictHelper():
             self.buildAndSaveVariant(variant, key)
 
             index = character.find('dic_number')
-            self.buildAndSaveIndex(index, key)
+            if index != None:
+                self.buildAndSaveIndex(index, key)
 
             queryCode = character.find('query_code')
             self.buildAndSaveIndex(queryCode, key)
 
-            reading = character.find('./reading_meaning')
-            self.buildAndSaveReading(reading, key)
+            rmeaning = character.find('./reading_meaning')
+            if rmeaning != None:
+                self.buildAndSaveReading(rmeaning, key)
 
-            meaning = character.find('./reading_meaning/rmgroup')
-            self.buildAndSaveMeaning(meaning, key)
+                meaning = rmeaning.find('rmgroup')
+                self.buildAndSaveMeaning(meaning, key)
 
-        print(f'Kanji: {count}')
+            count += 1
+
+        print(f'Saved Kanji: {count}')
