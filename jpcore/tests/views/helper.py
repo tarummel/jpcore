@@ -1,26 +1,31 @@
 API_PREFIX = '/api'
-RADICALS_PATH = 'radicals'
-KANJI_PATH = 'kanji'
+JM = 'jmdict'
+KD = 'kanjidic'
+KR = 'krad'
 
 class TestHelper():
-    def listRadicalsUrl(self):
-        return f'{API_PREFIX}/{RADICALS_PATH}/'
-
-    def getRadicalUrl(self, radical):
-        return f'{API_PREFIX}/{RADICALS_PATH}/{radical}/'
     
-    def getKanjiFromRadicalsUrl(self, radicals):
-        return f'{API_PREFIX}/{RADICALS_PATH}/{radicals}/kanji/'
-
-    def getRelatedRadicalsUrl(self, radicals):
-        return f'{API_PREFIX}/{RADICALS_PATH}/{radicals}/related/'
-
     def getEntryByIdUrl(self, id: int):
-        return f'{API_PREFIX}/{KANJI_PATH}/{id}/'
+        return f'{API_PREFIX}/{JM}/kanji/{id}/'
     
     def getEntryByCharacterUrl(self, kanji: str):
-        return f'{API_PREFIX}/{KANJI_PATH}/{kanji}/'
+        return f'{API_PREFIX}/{JM}/kanji/{kanji}/'
     
-    def getKanjiRadicalsUrl(self, kanji):
-        return f'{API_PREFIX}/{KANJI_PATH}/{kanji}/radicals/'
+    def getKDKanjiByIdUrl(self, id: int):
+        return f'{API_PREFIX}/{KD}/kanji/{id}/'
+    
+    def getKDKanjiByKanjiUrl(self, kanji: str):
+        return f'{API_PREFIX}/{KD}/kanji/{kanji}/'
+
+    def listRadicalsUrl(self):
+        return f'{API_PREFIX}/{KR}/radicals/'
+
+    def getRadicalUrl(self, radical):
+        return f'{API_PREFIX}/{KR}/radicals/{radical}/'
+    
+    def getKanjiFromRadicalsUrl(self, radicals):
+        return f'{API_PREFIX}/{KR}/radicals/{radicals}/kanji/'
+
+    def getRelatedRadicalsUrl(self, radicals):
+        return f'{API_PREFIX}/{KR}/radicals/{radicals}/related/'
     

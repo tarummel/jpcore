@@ -2,8 +2,8 @@ from http import HTTPStatus
 from django.http import JsonResponse
 from django.views.decorators.http import require_GET
 
-from jpcore.models import JMdictEntry, JMdictKanji
-from jpcore.serializers import JMdictEntrySerializer
+from jpcore.models import KDKanji
+from jpcore.serializers import KDKanjiSerializer
 
 
 def success(code, data):
@@ -14,28 +14,27 @@ def error(code, reason = None):
         return JsonResponse({'status': 'failed', 'reason': reason}, status = code)
     return JsonResponse({'status': 'failed'}, status = code)
 
-# returns the JMdict entry by id
+# returns the KanjiDic kanji by id
 @require_GET
 def getById(request, id):
     try:
-        entry = JMdictEntry.objects.get(ent_seq = id)
+        entry = KDKanji.objects.get(id = id)
     except Exception as e:
-        # print(e)
         return error(HTTPStatus.NOT_FOUND, 'entry not found')
     
-    serializer = JMdictEntrySerializer(entry)
+    serializer = KDKanjiSerializer(entry)
     return success(HTTPStatus.OK, serializer.data)
 
-# returns all JMdict entries for a given kanji char
+# returns the KanjiDic kanji by kanji
 @require_GET
-def getByCharacter(request, kanji):
-    if len(kanji) == 1 and not kanji == '':
-        queryset = JMdictEntry.objects.filter(jkanji__content = kanji)
+def getByKanji(request, kanji):
+    if len(kanji) == 1:
+        queryset = KDKanji.objects.filter(kanji = kanji)
 
         if not len(queryset):
             return error(HTTPStatus.NOT_FOUND, 'entry not found')
         
-        serializer = JMdictEntrySerializer(queryset, many = True)
+        serializer = KDKanjiSerializer(queryset, many = True)
         return success(HTTPStatus.OK, serializer.data)
 
     return error(HTTPStatus.BAD_REQUEST)

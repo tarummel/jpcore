@@ -1,6 +1,6 @@
 from django.db import models
 
-# Start of a KanjiDict entry
+# Start of a KanjiDic entry
 class KDKanji(models.Model):
     
     # The character itself in UTF8 coding.

@@ -2,13 +2,13 @@ import time
 from django.core.management.base import BaseCommand
 
 from jpcore.models import KDKanji, KDCodePoint, KDRadical, KDMisc,  KDVariant, KDIndex, KDQueryCode, KDReading, KDMeaning
-from jpcore.management.helpers import SeedKanjiDictHelper as helper
+from jpcore.management.helpers import SeedKanjiDicHelper as helper
 
 # Entry:198729, Kanji:204164, Read:238386, Sense:228960, Gloss:395043, Sour:5581
 # Execution time (seconds):906.6395170688629
 
 class Command(BaseCommand):
-    help = 'Seed KanjiDict Command'
+    help = 'Seed KanjiDic Command'
 
     def __init__(self):
         KDKanji.objects.all().delete()

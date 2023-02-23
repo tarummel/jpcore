@@ -7,7 +7,7 @@ FILE_PATH = './resources/kanjidic2.xml'
 # Kanji: 13108
 # Execution time (seconds): 80.92943215370178
 
-class SeedKanjiDictHelper():
+class SeedKanjiDicHelper():
 
     def getText(self, xml, element):
         match = xml.find(element)

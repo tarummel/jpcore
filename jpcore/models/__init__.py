@@ -10,7 +10,7 @@ from .jmdict_source import JMdictSource
 from .radical import Radical
 from .kanji import Kanji
 
-# --- KanjiDict models ---
+# --- KanjiDic models ---
 from .kd_kanji import KDKanji
 from .kd_code_point import KDCodePoint
 from .kd_radical import KDRadical

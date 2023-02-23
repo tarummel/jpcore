@@ -39,7 +39,7 @@ def list(request):
 
 # returns the Radical object associated with the radical char
 @require_GET
-def get(request, radical):
+def getByRadical(request, radical):
 
     if len(radical) != 1:
         return error(HTTPStatus.BAD_REQUEST)

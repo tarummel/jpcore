@@ -2,9 +2,9 @@ from django.test import TestCase
 from lxml import etree
 
 from jpcore.models import KDKanji, KDCodePoint, KDRadical, KDMisc,  KDVariant, KDIndex, KDQueryCode, KDReading, KDMeaning
-from jpcore.management.helpers import SeedKanjiDictHelper as helper
+from jpcore.management.helpers import SeedKanjiDicHelper as helper
 
-class SeedKanjiDictHelperTestCase(TestCase):
+class SeedKanjiDicHelperTestCase(TestCase):
     helper = helper()
 
     def setUp(self):
