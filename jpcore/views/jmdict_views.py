@@ -20,7 +20,6 @@ def getById(request, id):
     try:
         entry = JMdictEntry.objects.get(ent_seq = id)
     except Exception as e:
-        # print(e)
         return error(HTTPStatus.NOT_FOUND, 'entry not found')
     
     serializer = JMdictEntrySerializer(entry)

@@ -5,7 +5,7 @@ from django.test import TestCase, Client
 from jpcore.models import JMdictEntry, JMdictGlossary, JMdictKanji, JMdictReading, JMdictSense, JMdictSource
 from . import TestHelper
 
-class KanjiViewsTestCase(TestCase):
+class JMdictViewsTestCase(TestCase):
     
     def setUp(self):
         self.client = Client()

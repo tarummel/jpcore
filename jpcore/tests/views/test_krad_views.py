@@ -6,7 +6,7 @@ from jpcore.models import Kanji, Radical
 from . import TestHelper
 
 
-class RadicalViewsTestCase(TestCase):
+class KradViewsTestCase(TestCase):
     
     def setUp(self):
         self.helper = TestHelper()

@@ -5,7 +5,7 @@ from django.db import models
 # current kanji.
 class KDVariant(models.Model):
     
-    kanji = models.ForeignKey('KDKanji', on_delete = models.CASCADE, related_name = 'kvariant')
+    kanji = models.ForeignKey('KDKanji', on_delete = models.CASCADE, related_name = 'kdvariant')
 
     deroo = models.TextField(blank = True)
     jis208 = models.TextField(blank = True)

@@ -18,23 +18,23 @@ def error(code, reason = None):
 @require_GET
 def getById(request, id):
     try:
-        entry = KDKanji.objects.get(id = id)
+        kanji = KDKanji.objects.get(id = id)
     except Exception as e:
         return error(HTTPStatus.NOT_FOUND, 'entry not found')
     
-    serializer = KDKanjiSerializer(entry)
+    serializer = KDKanjiSerializer(kanji)
     return success(HTTPStatus.OK, serializer.data)
 
 # returns the KanjiDic kanji by kanji
 @require_GET
 def getByKanji(request, kanji):
     if len(kanji) == 1:
-        queryset = KDKanji.objects.filter(kanji = kanji)
-
-        if not len(queryset):
+        try:
+            kanji = KDKanji.objects.get(id = id)
+        except Exception as e:
             return error(HTTPStatus.NOT_FOUND, 'entry not found')
         
-        serializer = KDKanjiSerializer(queryset, many = True)
+        serializer = KDKanjiSerializer(kanji, many = True)
         return success(HTTPStatus.OK, serializer.data)
 
     return error(HTTPStatus.BAD_REQUEST)

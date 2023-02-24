@@ -2,6 +2,7 @@ import copy
 from rest_framework import serializers
 from jpcore import models
 
+
 class DynamicFieldsModelSerializer(serializers.ModelSerializer):
     """
     A ModelSerializer that takes an additional `fields` argument that
@@ -45,7 +46,7 @@ class KDMiscSerializer(DynamicFieldsModelSerializer):
         model = models.KDMisc
         fields = ['grade', 'jlpt', 'strokes', 'frequency', 'radical_names']
 
-class KDVariantSerializer(DynamicFieldsModelSerializer):
+class KDVariantSerializer(DynamicFieldsModelSerializer, NonEmptySerializer):
     class Meta:
         model = models.KDVariant
         fields = ['nelson_c', 'halpern_njecd', 'oneill']
@@ -53,7 +54,6 @@ class KDVariantSerializer(DynamicFieldsModelSerializer):
 class KDIndexSerializer(DynamicFieldsModelSerializer):
     class Meta:
         model = models.KDIndex
-        # too many to write out
         fields = ['nelson_c', 'halpern_njecd', 'oneill_kk']
 
 class KDQueryCodeSerializer(DynamicFieldsModelSerializer):
@@ -72,18 +72,18 @@ class KDMeaningSerializer(DynamicFieldsModelSerializer):
         fields = ['en']
 
 class KDKanjiSerializer(DynamicFieldsModelSerializer):
-    codepoint = KDCodePointSerializer(read_only = True)
-    radical = KDRadicalSerializer(read_only = True)
-    misc = KDMiscSerializer(read_only = True)
-    variant = KDVariantSerializer(read_only = True)
-    index = KDIndexSerializer(read_only = True)
-    queryCode = KDQueryCodeSerializer(read_only = True)
-    reading = KDReadingSerializer(read_only = True)
-    meaning = KDMeaningSerializer(read_only = True)
+    codepoint = KDCodePointSerializer(many = True, read_only = True, source = 'kdcodepoint')
+    radical = KDRadicalSerializer(many = True, read_only = True, source = 'kdradical')
+    misc = KDMiscSerializer(many = True, read_only = True, source = 'kdmisc')
+    # variant = KDVariantSerializer(many = True, read_only = True, source = 'kdvariant')
+    # index = KDIndexSerializer(many = True, read_only = True, source = 'kdindex')
+    # querycode = KDQueryCodeSerializer(many = True, read_only = True, source = 'kdquerycode')
+    reading = KDReadingSerializer(many = True, read_only = True, source = 'kdreading')
+    meaning = KDMeaningSerializer(many = True, read_only = True, source = 'kdmeaning')
 
     class Meta:
         model = models.KDKanji
-        fields = ['kanji', 'codepoint', 'radical', 'variant', 'index', 'querycode', 'reading', 'meaning']
+        fields = ['kanji', 'codepoint', 'radical', 'misc', 'reading', 'meaning']
 
 
 # ----- JMdict -----
