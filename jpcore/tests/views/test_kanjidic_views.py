@@ -166,7 +166,7 @@ class KanjiDicViewsTestCase(TestCase):
         self.assertEqual(meaning['en'], self.meaning.en)
 
     def test_get_by_id_not_found(self):
-        url = self.helper.getKDKanjiByIdUrl(1)
+        url = self.helper.getKDKanjiByIdUrl(0)
         response = self.client.get(url)
         self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
 
@@ -178,13 +178,9 @@ class KanjiDicViewsTestCase(TestCase):
         url = self.helper.getKDKanjiByIdUrl(None)
         response = self.client.get(url)
         self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
-
-        url = self.helper.getKDKanjiByIdUrl('too long')
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
     
-    def test_get_by_id_success(self):
-        url = self.helper.getKDKanjiByKanjiUrl(self.kanji.id)
+    def test_get_by_kanji_success(self):
+        url = self.helper.getKDKanjiByKanjiUrl(self.kanji.kanji)
         response = self.client.get(url)
         self.assertEqual(response.status_code, HTTPStatus.OK)
         
@@ -272,16 +268,17 @@ class KanjiDicViewsTestCase(TestCase):
         meaning = data['meaning'][0]
         self.assertEqual(meaning['en'], self.meaning.en)
 
-    def test_get_by_id_not_found(self):
-        url = self.helper.getKDKanjiByKanjiUrl(1)
+    def test_get_by_kanji_not_found(self):
+        url = self.helper.getKDKanjiByKanjiUrl('扱')
         response = self.client.get(url)
         self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
 
-        url = self.helper.getKDKanjiByKanjiUrl(123456789)
+    def test_get_by_kanji_not_found(self):
+        url = self.helper.getKDKanjiByKanjiUrl('')
         response = self.client.get(url)
         self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
 
-    def test_get_by_id_bad_request(self):
+    def test_get_by_kanji_bad_request(self):
         url = self.helper.getKDKanjiByKanjiUrl(None)
         response = self.client.get(url)
         self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)

@@ -20,7 +20,7 @@ def getById(request, id):
     try:
         kanji = KDKanji.objects.get(id = id)
     except Exception as e:
-        return error(HTTPStatus.NOT_FOUND, 'entry not found')
+        return error(HTTPStatus.NOT_FOUND, 'entry by id not found')
     
     serializer = KDKanjiSerializer(kanji)
     return success(HTTPStatus.OK, serializer.data)
@@ -30,11 +30,11 @@ def getById(request, id):
 def getByKanji(request, kanji):
     if len(kanji) == 1:
         try:
-            kanji = KDKanji.objects.get(id = id)
+            kanji = KDKanji.objects.get(kanji = kanji)
         except Exception as e:
-            return error(HTTPStatus.NOT_FOUND, 'entry not found')
+            return error(HTTPStatus.NOT_FOUND, 'entry by kanji not found')
         
-        serializer = KDKanjiSerializer(kanji, many = True)
+        serializer = KDKanjiSerializer(kanji)
         return success(HTTPStatus.OK, serializer.data)
 
     return error(HTTPStatus.BAD_REQUEST)
