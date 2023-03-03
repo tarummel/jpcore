@@ -13,18 +13,18 @@ class TestHelper():
     
     def getKDKanjiByIdUrl(self, id: int):
         return f'{API_PREFIX}/{KD}/kanji/{id}/'
-    
+
     def getKDKanjiByKanjiUrl(self, kanji: str):
         return f'{API_PREFIX}/{KD}/kanji/{kanji}/'
+
+    def getKanjiFromRadicalsUrl(self, radicals):
+        return f'{API_PREFIX}/{KD}/radicals/{radicals}/kanji/'
 
     def listRadicalsUrl(self):
         return f'{API_PREFIX}/{KR}/radicals/'
 
     def getRadicalUrl(self, radical):
         return f'{API_PREFIX}/{KR}/radicals/{radical}/'
-    
-    def getKanjiFromRadicalsUrl(self, radicals):
-        return f'{API_PREFIX}/{KR}/radicals/{radicals}/kanji/'
 
     def getRelatedRadicalsUrl(self, radicals):
         return f'{API_PREFIX}/{KR}/radicals/{radicals}/related/'

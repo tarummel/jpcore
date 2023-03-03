@@ -15,11 +15,11 @@ urlpatterns = [
         path('kanjidic/', include([
             path('kanji/<int:id>/', views.kanjidic_views.getById),
             path('kanji/<str:kanji>/', views.kanjidic_views.getByKanji),
+            path('radicals/<str:radicals>/kanji/', views.kanjidic_views.getKanjiFromRadicals),
         ])),
         path('krad/', include([
             path('radicals/', views.krad_views.list),
             path('radicals/<str:radical>/', views.krad_views.getByRadical),
-            path('radicals/<str:radicals>/kanji/', views.krad_views.getKanjiFromRadicals),
             path('radicals/<str:radicals>/related/', views.krad_views.getRelatedRadicals),
         ])),
     ])),
