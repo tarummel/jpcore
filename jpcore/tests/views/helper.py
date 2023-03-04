@@ -28,4 +28,6 @@ class TestHelper():
 
     def getRelatedRadicalsUrl(self, radicals):
         return f'{API_PREFIX}/{KR}/radicals/{radicals}/related/'
-    
+
+    def getKDKanjiRandom(self):
+        return f'{API_PREFIX}/{KD}/random/'

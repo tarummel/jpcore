@@ -475,4 +475,23 @@ class KanjiDicViewsTestCase(TestCase):
         url = self.helper.getKanjiFromRadicalsUrl('still too long')
         response = self.client.get(url)
         self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
-    
+
+    def test_get_random(self):
+        url = self.helper.getKDKanjiRandom()
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+
+        json = JSON.loads(response.content)
+        self.assertEqual(json['status'], 'success')
+        self.assertTrue(isinstance(json['data'], dict))
+        self.assertTrue(isinstance(json['data']['kanji'], str))
+
+    def test_get_random_kanji_only(self):
+        url = self.helper.getKDKanjiRandom()
+        response = self.client.get(url, {'kanji_only': 'true'})
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+
+        json = JSON.loads(response.content)
+        self.assertEqual(json['status'], 'success')
+        self.assertTrue(isinstance(json['data'], str))
+        self.assertEqual(len(json['data']), 1)

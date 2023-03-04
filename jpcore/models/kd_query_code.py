@@ -11,7 +11,7 @@ class KDQueryCode(models.Model):
     four_corner = models.TextField()
     deroo = models.TextField()
 
-    # The values of this attribute indicate the type if misclassification:
+    # SKIP code misclassifications:
 	# a mistake in the division of the kanji
     misclass_pos = models.TextField(blank = True)
 

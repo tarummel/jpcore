@@ -75,3 +75,13 @@ def getKanjiFromRadicals(request, radicals):
 
     serializer = KDKanjiSerializer(queryset, many = True)
     return success(HTTPStatus.OK, serializer.data)
+
+@require_GET
+def getKanjiRandom(request):
+    if request.GET.get('kanji_only', None):
+        kanji = KDKanji.objects.order_by('?').values_list('kanji', flat = True).first()
+        return success(HTTPStatus.OK, kanji)
+
+    kanji = KDKanji.objects.order_by('?').first()
+    serializer = KDKanjiSerializer(kanji)
+    return success(HTTPStatus.OK, serializer.data)
