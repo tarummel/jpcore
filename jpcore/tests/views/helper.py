@@ -1,3 +1,6 @@
+from jpcore.models import KDQueryCode
+
+
 API_PREFIX = '/api'
 JM = 'jmdict'
 KD = 'kanjidic'
@@ -29,5 +32,21 @@ class TestHelper():
     def getRelatedRadicalsUrl(self, radicals):
         return f'{API_PREFIX}/{KR}/radicals/{radicals}/related/'
 
-    def getKDKanjiRandom(self):
+    def getKDKanjiRandomUrl(self):
         return f'{API_PREFIX}/{KD}/random/'
+
+    def getKDKanjiBySkipCodeUrl(self, code):
+        return f'{API_PREFIX}/{KD}/kanji/skipcode/{code}/'
+
+    def buildKDQueryCode(self, kanji, skip = '1-1-1', ms_pos = []):
+        return KDQueryCode.objects.create(
+            kanji = kanji,
+            skip = skip,
+            sh_descriptor = 'test',
+            four_corner = 'test',
+            deroo = 'test',
+            misclass_pos = ms_pos,
+            misclass_strokes = [],
+            misclass_strokes_diff = [],
+            misclass_strokes_pos = []
+        )

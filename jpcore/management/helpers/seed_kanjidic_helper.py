@@ -1,6 +1,6 @@
 from lxml import etree
 
-from jpcore.models import KDKanji, KDCodePoint, KDRadical, KDMisc,  KDVariant, KDIndex, KDQueryCode, KDReading, KDMeaning
+from jpcore.models import KDKanji, KDCodePoint, KDRadical, KDMisc,  KDVariant, KDIndex, KDQueryCode, KDReading, KDMeaning, SkipCode
 
 FILE_PATH = './resources/kanjidic2.xml'
 
@@ -8,6 +8,7 @@ FILE_PATH = './resources/kanjidic2.xml'
 # Execution time (seconds): 80.92943215370178
 
 class SeedKanjiDicHelper():
+    skipCodes = {}
 
     def getText(self, xml, element):
         match = xml.find(element)
@@ -110,11 +111,58 @@ class SeedKanjiDicHelper():
             sh_descriptor = self.getText(xml, 'q_code[@qc_type="sh_desc"]'),
             four_corner = self.getText(xml, 'q_code[@qc_type="four_corner"]'),
             deroo = self.getText(xml, 'q_code[@qc_type="deroo"]'),
-            misclass_pos = self.getText(xml, 'q_code[@qc_type="skip"][@skip_misclass="posn"]'),
-            misclass_strokes = self.getText(xml, 'q_code[@qc_type="skip"][@skip_misclass="stroke_count"]'),
-            misclass_strokes_diff = self.getText(xml, 'q_code[@qc_type="skip"][@skip_misclass="stroke_diff"]'),
-            misclass_strokes_pos = self.getText(xml, 'q_code[@qc_type="skip"][@skip_misclass="stroke_and_posn"]')
+            misclass_pos = self.getList(xml, 'q_code[@qc_type="skip"][@skip_misclass="posn"]'),
+            misclass_strokes = self.getList(xml, 'q_code[@qc_type="skip"][@skip_misclass="stroke_count"]'),
+            misclass_strokes_diff = self.getList(xml, 'q_code[@qc_type="skip"][@skip_misclass="stroke_diff"]'),
+            misclass_strokes_pos = self.getList(xml, 'q_code[@qc_type="skip"][@skip_misclass="stroke_and_posn"]')
         )
+    
+    def buildAndSaveSkipCode(self, code, kanji):
+        values = code.split('-')
+        skipcode =  SkipCode.objects.create(
+            category = values[0],
+            main = values[1],
+            sub = values[2]
+        )
+
+        skipcode.kanji.add(kanji)
+        
+        self.skipCodes[code] = skipcode
+        return skipcode
+        
+    def handleSkipCodes(self, qcode, kanji):
+        saved = []
+
+        if qcode.skip in self.skipCodes:
+            kanji.skipcode_set.add(self.skipCodes[qcode.skip])
+        else:
+            saved.append(self.buildAndSaveSkipCode(qcode.skip, kanji))
+        
+        for s in qcode.misclass_pos:
+            if s in self.skipCodes:
+                kanji.skipcode_set.add(self.skipCodes[s])
+                continue
+            saved.append(self.buildAndSaveSkipCode(s, kanji))
+
+        for s in qcode.misclass_strokes:
+            if s in self.skipCodes:
+                kanji.skipcode_set.add(self.skipCodes[s])
+                continue
+            saved.append(self.buildAndSaveSkipCode(s, kanji))
+
+        for s in qcode.misclass_strokes_diff:
+            if s in self.skipCodes:
+                kanji.skipcode_set.add(self.skipCodes[s])
+                continue
+            saved.append(self.buildAndSaveSkipCode(s, kanji))
+
+        for s in qcode.misclass_strokes_pos:
+            if s in self.skipCodes:
+                kanji.skipcode_set.add(self.skipCodes[s])
+                continue
+            saved.append(self.buildAndSaveSkipCode(s, kanji))
+
+        return saved
 
     def buildAndSaveReading(self, xml, kanji):
         rmgroupXml = xml.find('rmgroup')
@@ -162,7 +210,8 @@ class SeedKanjiDicHelper():
                 self.buildAndSaveIndex(index, key)
 
             queryCode = character.find('query_code')
-            self.buildAndSaveIndex(queryCode, key)
+            savedQcode = self.buildAndSaveQueryCode(queryCode, key)
+            self.handleSkipCodes(savedQcode, key)
 
             rmeaning = character.find('./reading_meaning')
             if rmeaning != None:

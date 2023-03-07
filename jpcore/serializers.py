@@ -77,13 +77,13 @@ class KDKanjiSerializer(DynamicFieldsModelSerializer):
     misc = KDMiscSerializer(many = True, read_only = True, source = 'kdmisc')
     # variant = KDVariantSerializer(many = True, read_only = True, source = 'kdvariant')
     # index = KDIndexSerializer(many = True, read_only = True, source = 'kdindex')
-    # querycode = KDQueryCodeSerializer(many = True, read_only = True, source = 'kdquerycode')
+    querycode = KDQueryCodeSerializer(many = True, read_only = True, source = 'kdquerycode')
     reading = KDReadingSerializer(many = True, read_only = True, source = 'kdreading')
     meaning = KDMeaningSerializer(many = True, read_only = True, source = 'kdmeaning')
 
     class Meta:
         model = models.KDKanji
-        fields = ['kanji', 'codepoint', 'radical', 'misc', 'reading', 'meaning']
+        fields = ['kanji', 'codepoint', 'radical', 'misc', 'querycode', 'reading', 'meaning']
 
 
 # ----- JMdict -----

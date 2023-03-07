@@ -20,3 +20,6 @@ from .kd_index import KDIndex
 from .kd_query_code import KDQueryCode
 from .kd_reading import KDReading
 from .kd_meaning import KDMeaning
+
+# --- KanjiDic aux models ---
+from .skip_code import SkipCode

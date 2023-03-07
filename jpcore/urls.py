@@ -14,6 +14,7 @@ urlpatterns = [
         ])),    
         path('kanjidic/', include([
             path('kanji/<int:id>/', views.kanjidic_views.getById),
+            path('kanji/skipcode/<str:skip>/', views.kanjidic_views.getKanjiBySkipCode),
             path('kanji/<str:kanji>/', views.kanjidic_views.getByKanji),
             path('radicals/<str:radicals>/kanji/', views.kanjidic_views.getKanjiFromRadicals),
             path('random/', views.kanjidic_views.getKanjiRandom),

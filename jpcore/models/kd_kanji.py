@@ -5,6 +5,8 @@ class KDKanji(models.Model):
     
     # The character itself in UTF8 coding.
     kanji = models.TextField()
+    
+    # skipcode_set/skipcode = skip_codes reverse reference
 
     def __str__(self):
         return f'kanji: {self.kanji}'

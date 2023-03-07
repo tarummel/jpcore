@@ -12,10 +12,10 @@ class KDQueryCodeTestCase(TestCase):
             sh_descriptor = '4i10.1',
             four_corner = '2024.7',
             deroo = '2067',
-            misclass_pos = '12',
-            misclass_strokes = '4-1-1',
-            misclass_strokes_diff = '1-2-3',
-            misclass_strokes_pos = '2-1-4'
+            misclass_pos = ['2-2-1'],
+            misclass_strokes = ['4-1-1'],
+            misclass_strokes_diff = ['1-2-3'],
+            misclass_strokes_pos = ['2-1-4']
         )
         saved = KDQueryCode.objects.get(id = qc.id)
         

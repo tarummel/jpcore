@@ -1,7 +1,7 @@
 from django.test import TestCase
 from lxml import etree
 
-from jpcore.models import KDKanji, KDCodePoint, KDRadical, KDMisc,  KDVariant, KDIndex, KDQueryCode, KDReading, KDMeaning
+from jpcore.models import KDKanji, KDCodePoint, KDRadical, KDMisc,  KDVariant, KDIndex, KDQueryCode, KDReading, KDMeaning, SkipCode
 from jpcore.management.helpers import SeedKanjiDicHelper as helper
 
 class SeedKanjiDicHelperTestCase(TestCase):
@@ -96,8 +96,8 @@ class SeedKanjiDicHelperTestCase(TestCase):
         self.assertEqual(index.moro_page, moroP)
 
     def test_save_querycode(self):
-        skip, sh_desc, four, deroo, ms1, ms2, ms3, ms4 = '2-3-4', '3p4.2', '4071.2', '1456', '2-3-6', '2-4-11', '2-3-10', '2-4-8'
-        xml = etree.XML(f'<query_code><q_code qc_type="skip">{skip}</q_code><q_code qc_type="sh_desc">{sh_desc}</q_code><q_code qc_type="four_corner">{four}</q_code><q_code qc_type="deroo">{deroo}</q_code><q_code qc_type="skip" skip_misclass="posn">{ms1}</q_code><q_code qc_type="skip" skip_misclass="stroke_count">{ms2}</q_code><q_code qc_type="skip" skip_misclass="stroke_diff">{ms3}</q_code><q_code qc_type="skip" skip_misclass="stroke_and_posn">{ms4}</q_code></query_code>')
+        skip, sh_desc, four, deroo, ms1, ms2, ms3, ms4 = '2-3-4', '3p4.2', '4071.2', '1456', ['2-3-6'], ['2-4-11'], ['2-3-10'], ['2-4-8']
+        xml = etree.XML(f'<query_code><q_code qc_type="skip">{skip}</q_code><q_code qc_type="sh_desc">{sh_desc}</q_code><q_code qc_type="four_corner">{four}</q_code><q_code qc_type="deroo">{deroo}</q_code><q_code qc_type="skip" skip_misclass="posn">{ms1[0]}</q_code><q_code qc_type="skip" skip_misclass="stroke_count">{ms2[0]}</q_code><q_code qc_type="skip" skip_misclass="stroke_diff">{ms3[0]}</q_code><q_code qc_type="skip" skip_misclass="stroke_and_posn">{ms4[0]}</q_code></query_code>')
 
         qc = self.helper.buildAndSaveQueryCode(xml, self.kanji)
         self.assertEqual(qc.skip, skip)
@@ -108,6 +108,59 @@ class SeedKanjiDicHelperTestCase(TestCase):
         self.assertEqual(qc.misclass_strokes, ms2)
         self.assertEqual(qc.misclass_strokes_diff, ms3)
         self.assertEqual(qc.misclass_strokes_pos, ms4)
+
+    def test_handle_skipcodes(self):
+        kanji = KDKanji.objects.create(
+            kanji = '以'
+        )
+        qcode = KDQueryCode.objects.create(
+            kanji = kanji,
+            skip = '1-1-1',
+            sh_descriptor = '4i10.1',
+            four_corner = '2024.7',
+            deroo = '2067',
+            misclass_pos = ['3-12-1'],
+            misclass_strokes = ['1-2-3'],
+            misclass_strokes_diff = ['2-3-4', '4-1-1'],
+            misclass_strokes_pos = ['1-2-3'] # dupe
+        )
+
+        skipcodes = self.helper.handleSkipCodes(qcode, kanji)
+        
+        savedKanji = KDKanji.objects.get(id = kanji.id)
+        self.assertEqual(savedKanji.kanji, kanji.kanji)
+        self.assertEqual(len(savedKanji.skipcode_set.all()), 5)
+        
+        key1 = qcode.skip.split('-')
+        key2 = qcode.misclass_pos[0].split('-')
+        key3 = qcode.misclass_strokes[0].split('-')
+        key4 = qcode.misclass_strokes_diff[0].split('-')
+        key5 = qcode.misclass_strokes_diff[1].split('-')
+
+        skip1 = SkipCode.objects.get(category = key1[0], main = key1[1], sub = key1[2])
+        skip2 = SkipCode.objects.get(category = key2[0], main = key2[1], sub = key2[2])
+        skip3 = SkipCode.objects.get(category = key3[0], main = key3[1], sub = key3[2])
+        skip4 = SkipCode.objects.get(category = key4[0], main = key4[1], sub = key4[2])
+        skip5 = SkipCode.objects.get(category = key5[0], main = key5[1], sub = key5[2])
+
+        self.assertEqual(savedKanji.skipcode_set.all()[0], skip1)
+        self.assertEqual(savedKanji.skipcode_set.all()[1], skip2)
+        self.assertEqual(savedKanji.skipcode_set.all()[2], skip3)
+        self.assertEqual(savedKanji.skipcode_set.all()[3], skip4)
+        self.assertEqual(savedKanji.skipcode_set.all()[4], skip5)
+
+    def test_save_skipcode(self):
+        kanji = KDKanji.objects.create(
+            kanji = '以'
+        )
+        key = '1-2-3'
+        values = key.split('-')
+        skipcode = self.helper.buildAndSaveSkipCode(key, kanji)
+
+        self.assertEqual(skipcode.category, values[0])
+        self.assertEqual(skipcode.main, values[1])
+        self.assertEqual(skipcode.sub, values[2])
+        self.assertEqual(list(skipcode.kanji.all()), [kanji])
 
     def test_save_reading(self):
         pinyin, k_r, k_h, vt, ja_on, ja_kun, nanori = 'si4', 'sa', '사', 'Tự', 'シ', 'か.う', 'かい'

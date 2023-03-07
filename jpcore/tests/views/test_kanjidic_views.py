@@ -2,7 +2,7 @@ import json as JSON
 from http import HTTPStatus
 from django.test import TestCase, Client
 
-from jpcore.models import Radical, Kanji, KDKanji, KDCodePoint, KDRadical, KDMisc,  KDVariant, KDIndex, KDQueryCode, KDReading, KDMeaning
+from jpcore.models import Radical, Kanji, KDKanji, KDCodePoint, KDRadical, KDMisc,  KDVariant, KDIndex, KDQueryCode, KDReading, KDMeaning, SkipCode
 from . import TestHelper
 
 
@@ -52,15 +52,21 @@ class KanjiDicViewsTestCase(TestCase):
         )
         self.qcode = KDQueryCode.objects.create(
             kanji = self.kanji,
-            skip = 'test',
+            skip = '1-2-3',
             sh_descriptor = 'test',
             four_corner = 'test',
             deroo = 'test',
-            misclass_pos = 'test',
-            misclass_strokes = 'test',
-            misclass_strokes_diff = 'test',
-            misclass_strokes_pos = 'test'
+            misclass_pos = ['test'],
+            misclass_strokes = ['test'],
+            misclass_strokes_diff = ['test'],
+            misclass_strokes_pos = ['test']
         )
+        self.skipcode = SkipCode.objects.create(
+            category = 1,
+            main = 2,
+            sub = 3
+        )
+        self.skipcode.kanji.add(self.kanji)
         self.reading = KDReading.objects.create(
             kanji = self.kanji,
             ch_pinyin = ['blah'],
@@ -163,16 +169,15 @@ class KanjiDicViewsTestCase(TestCase):
         # self.assertFalse(ind.get('sh_kk2'))
         # self.assertFalse(ind.get('tutt_cards'))
         
-        self.assertFalse(data.get('querycode'))
-        # qc = data['querycode'][0]
-        # self.assertEqual(qc['skip'], self.qcode.skip)
-        # self.assertEqual(qc['sh_descriptor'], self.qcode.sh_descriptor)
-        # self.assertEqual(qc['four_corner'], self.qcode.four_corner)
-        # self.assertFalse(qc.get('deroo'))
-        # self.assertFalse(qc.get('misclass_pos'))
-        # self.assertFalse(qc.get('misclass_strokes'))
-        # self.assertFalse(qc.get('misclass_strokes_diff'))
-        # self.assertFalse(qc.get('misclass_strokes_pos'))
+        qc = data['querycode'][0]
+        self.assertEqual(qc['skip'], self.qcode.skip)
+        self.assertEqual(qc['sh_descriptor'], self.qcode.sh_descriptor)
+        self.assertEqual(qc['four_corner'], self.qcode.four_corner)
+        self.assertEqual(qc['deroo'], self.qcode.deroo)
+        self.assertFalse(qc.get('misclass_pos'))
+        self.assertFalse(qc.get('misclass_strokes'))
+        self.assertFalse(qc.get('misclass_strokes_diff'))
+        self.assertFalse(qc.get('misclass_strokes_pos'))
 
         reading = data['reading'][0]
         self.assertFalse(reading.get('ko_romanized'))
@@ -266,16 +271,15 @@ class KanjiDicViewsTestCase(TestCase):
         # self.assertFalse(ind.get('sh_kk2'))
         # self.assertFalse(ind.get('tutt_cards'))
         
-        self.assertFalse(data.get('querycode'))
-        # qc = data['querycode'][0]
-        # self.assertEqual(qc['skip'], self.qcode.skip)
-        # self.assertEqual(qc['sh_descriptor'], self.qcode.sh_descriptor)
-        # self.assertEqual(qc['four_corner'], self.qcode.four_corner)
-        # self.assertFalse(qc.get('deroo'))
-        # self.assertFalse(qc.get('misclass_pos'))
-        # self.assertFalse(qc.get('misclass_strokes'))
-        # self.assertFalse(qc.get('misclass_strokes_diff'))
-        # self.assertFalse(qc.get('misclass_strokes_pos'))
+        qc = data['querycode'][0]
+        self.assertEqual(qc['skip'], self.qcode.skip)
+        self.assertEqual(qc['sh_descriptor'], self.qcode.sh_descriptor)
+        self.assertEqual(qc['four_corner'], self.qcode.four_corner)
+        self.assertEqual(qc['deroo'], self.qcode.deroo)
+        self.assertFalse(qc.get('misclass_pos'))
+        self.assertFalse(qc.get('misclass_strokes'))
+        self.assertFalse(qc.get('misclass_strokes_diff'))
+        self.assertFalse(qc.get('misclass_strokes_pos'))
 
         reading = data['reading'][0]
         self.assertFalse(reading.get('ko_romanized'))
@@ -377,16 +381,15 @@ class KanjiDicViewsTestCase(TestCase):
         # self.assertFalse(ind.get('sh_kk2'))
         # self.assertFalse(ind.get('tutt_cards'))
 
-        self.assertFalse(data.get('querycode'))
-        # qc = data['querycode'][0]
-        # self.assertEqual(qc['skip'], self.qcode.skip)
-        # self.assertEqual(qc['sh_descriptor'], self.qcode.sh_descriptor)
-        # self.assertEqual(qc['four_corner'], self.qcode.four_corner)
-        # self.assertFalse(qc.get('deroo'))
-        # self.assertFalse(qc.get('misclass_pos'))
-        # self.assertFalse(qc.get('misclass_strokes'))
-        # self.assertFalse(qc.get('misclass_strokes_diff'))
-        # self.assertFalse(qc.get('misclass_strokes_pos'))
+        qc = data['querycode'][0]
+        self.assertEqual(qc['skip'], self.qcode.skip)
+        self.assertEqual(qc['sh_descriptor'], self.qcode.sh_descriptor)
+        self.assertEqual(qc['four_corner'], self.qcode.four_corner)
+        self.assertEqual(qc['deroo'], self.qcode.deroo)
+        self.assertFalse(qc.get('misclass_pos'))
+        self.assertFalse(qc.get('misclass_strokes'))
+        self.assertFalse(qc.get('misclass_strokes_diff'))
+        self.assertFalse(qc.get('misclass_strokes_pos'))
 
         reading = data['reading'][0]
         self.assertFalse(reading.get('ko_romanized'))
@@ -477,7 +480,7 @@ class KanjiDicViewsTestCase(TestCase):
         self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
 
     def test_get_random(self):
-        url = self.helper.getKDKanjiRandom()
+        url = self.helper.getKDKanjiRandomUrl()
         response = self.client.get(url)
         self.assertEqual(response.status_code, HTTPStatus.OK)
 
@@ -487,7 +490,7 @@ class KanjiDicViewsTestCase(TestCase):
         self.assertTrue(isinstance(json['data']['kanji'], str))
 
     def test_get_random_kanji_only(self):
-        url = self.helper.getKDKanjiRandom()
+        url = self.helper.getKDKanjiRandomUrl()
         response = self.client.get(url, {'kanji_only': 'true'})
         self.assertEqual(response.status_code, HTTPStatus.OK)
 
@@ -495,3 +498,169 @@ class KanjiDicViewsTestCase(TestCase):
         self.assertEqual(json['status'], 'success')
         self.assertTrue(isinstance(json['data'], str))
         self.assertEqual(len(json['data']), 1)
+
+    def test_get_kanji_skip_code(self):
+        url = self.helper.getKDKanjiBySkipCodeUrl(self.qcode.skip)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+
+        json = JSON.loads(response.content)
+
+        data = json['data'][0]
+        self.assertEqual(data['kanji'], self.kanji.kanji)
+        self.assertEqual(data['querycode'][0]['skip'], self.qcode.skip)
+
+    def test_get_kanji_skip_code_multiple(self):
+        secondKanji = KDKanji.objects.create(kanji = '意')
+        secondQCode = self.helper.buildKDQueryCode(secondKanji, skip = self.qcode.skip)
+        self.skipcode.kanji.add(secondKanji)
+
+        url = self.helper.getKDKanjiBySkipCodeUrl(self.qcode.skip)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+
+        json = JSON.loads(response.content)
+        data = json['data']
+        self.assertEqual(len(data), 2)
+
+        k1, k2 = data[0], data[1]
+        self.assertEqual(k1['kanji'], self.kanji.kanji)
+        self.assertEqual(k1['querycode'][0]['skip'], self.qcode.skip)
+        self.assertEqual(k2['kanji'], secondKanji.kanji)
+        self.assertEqual(k2['querycode'][0]['skip'], secondQCode.skip)
+
+    def test_get_kanji_skip_code_main_range(self):
+        belowKanji = KDKanji.objects.create(kanji = 'low')
+        belowQCode = self.helper.buildKDQueryCode(belowKanji, skip = '1-20-1')
+        belowSkipCode = SkipCode.objects.create(category = 1, main = 20, sub = 1)
+        belowSkipCode.kanji.add(belowKanji)
+
+        key = '1-40-1'
+        url = self.helper.getKDKanjiBySkipCodeUrl(key)
+        response = self.client.get(url, {'main_range': 20})
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+
+        json = JSON.loads(response.content)
+        data = json['data'][0]
+        self.assertEqual(data['kanji'], belowKanji.kanji)
+        self.assertEqual(data['querycode'][0]['skip'], belowQCode.skip)
+
+    def test_get_kanji_skip_code_sub_range(self):
+        aboveKanji = KDKanji.objects.create(kanji = 'high')
+        aboveQCode = self.helper.buildKDQueryCode(aboveKanji, skip = '1-1-80')
+        aboveSkipCode = SkipCode.objects.create(category = 1, main = 1, sub = 80)
+        aboveSkipCode.kanji.add(aboveKanji)
+
+        key = '1-1-5'
+        url = self.helper.getKDKanjiBySkipCodeUrl(key)
+        response = self.client.get(url, {'sub_range': 75})
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+
+        json = JSON.loads(response.content)
+        data = json['data'][0]
+        self.assertEqual(data['kanji'], aboveKanji.kanji)
+        self.assertEqual(data['querycode'][0]['skip'], aboveQCode.skip)
+
+    def test_get_kanji_skip_code_both_range(self):
+        belowKanji = KDKanji.objects.create(kanji = 'a')
+        belowQCode = self.helper.buildKDQueryCode(belowKanji, skip = '1-1-3')
+        belowSkipCode = SkipCode.objects.create(category = 1, main = 1, sub = 3)
+        belowSkipCode.kanji.add(belowKanji)
+
+        aboveKanji = KDKanji.objects.create(kanji = 'b')
+        aboveQCode = self.helper.buildKDQueryCode(aboveKanji, skip = '1-3-5')
+        aboveSkipCode = SkipCode.objects.create(category = 1, main = 3, sub = 5)
+        aboveSkipCode.kanji.add(aboveKanji)
+
+        key = '1-2-4'
+        url = self.helper.getKDKanjiBySkipCodeUrl(key)
+        response = self.client.get(url, {'main_range': 2, 'sub_range': 1})
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+
+        json = JSON.loads(response.content)
+        data = json['data']
+        self.assertEqual(len(data), 3)
+
+        k1, k2, k3 = data[0], data[1], data[2]
+        self.assertEqual(k1['kanji'], self.kanji.kanji)
+        self.assertEqual(k1['querycode'][0]['skip'], self.qcode.skip)
+        self.assertEqual(k2['kanji'], belowKanji.kanji)
+        self.assertEqual(k2['querycode'][0]['skip'], belowQCode.skip)
+        self.assertEqual(k3['kanji'], aboveKanji.kanji)
+        self.assertEqual(k3['querycode'][0]['skip'], aboveQCode.skip)
+
+    def test_get_kanji_skip_code_malformed_code(self):
+        url = self.helper.getKDKanjiBySkipCodeUrl('test')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+        url = self.helper.getKDKanjiBySkipCodeUrl('test-test-test')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+        url = self.helper.getKDKanjiBySkipCodeUrl('1')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+        url = self.helper.getKDKanjiBySkipCodeUrl('1-1')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+        url = self.helper.getKDKanjiBySkipCodeUrl('1-1-1-1')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+        url = self.helper.getKDKanjiBySkipCodeUrl('111')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+    def test_get_kanji_skip_code_invalid_code_values(self):
+        url = self.helper.getKDKanjiBySkipCodeUrl('0-1-1')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+        url = self.helper.getKDKanjiBySkipCodeUrl('1-0-1')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+        url = self.helper.getKDKanjiBySkipCodeUrl('1-1-0')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+        url = self.helper.getKDKanjiBySkipCodeUrl('5-1-1')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+        url = self.helper.getKDKanjiBySkipCodeUrl('-1-1-1')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+        url = self.helper.getKDKanjiBySkipCodeUrl('1--1-1')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+        url = self.helper.getKDKanjiBySkipCodeUrl('1-1--1')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+        url = self.helper.getKDKanjiBySkipCodeUrl('-1--1--1')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+    def test_get_kanji_skip_code_no_entry_found(self):
+        url = self.helper.getKDKanjiBySkipCodeUrl('4-4-4')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
+
+    def test_get_kanji_skip_code_bad_ranges(self):
+        url = self.helper.getKDKanjiBySkipCodeUrl(self.qcode.skip)
+        response = self.client.get(url, {'main_range': -1})
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+        url = self.helper.getKDKanjiBySkipCodeUrl(self.qcode.skip)
+        response = self.client.get(url, {'sub_range': -1})
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+        url = self.helper.getKDKanjiBySkipCodeUrl(self.qcode.skip)
+        response = self.client.get(url, {'main_range': -1, 'sub_range': -1})
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)

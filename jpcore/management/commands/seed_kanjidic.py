@@ -1,7 +1,7 @@
 import time
 from django.core.management.base import BaseCommand
 
-from jpcore.models import KDKanji, KDCodePoint, KDRadical, KDMisc,  KDVariant, KDIndex, KDQueryCode, KDReading, KDMeaning
+from jpcore.models import KDKanji, KDCodePoint, KDRadical, KDMisc,  KDVariant, KDIndex, KDQueryCode, KDReading, KDMeaning, SkipCode
 from jpcore.management.helpers import SeedKanjiDicHelper as helper
 
 # Entry:198729, Kanji:204164, Read:238386, Sense:228960, Gloss:395043, Sour:5581
@@ -20,6 +20,8 @@ class Command(BaseCommand):
         KDQueryCode.objects.all().delete()
         KDReading.objects.all().delete()
         KDMeaning.objects.all().delete()
+
+        SkipCode.objects.all().delete()
 
     def handle(self, *args, **options):
         startTime = time.time()
