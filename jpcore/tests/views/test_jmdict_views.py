@@ -1,6 +1,8 @@
 import json as JSON
 from http import HTTPStatus
+from django.core.cache import cache
 from django.test import TestCase, Client
+from http import HTTPStatus
 
 from jpcore.models import JMdictEntry, JMdictGlossary, JMdictKanji, JMdictReading, JMdictSense, JMdictSource
 from . import TestHelper
@@ -96,6 +98,9 @@ class JMdictViewsTestCase(TestCase):
             partial = True,
             waseieigo = True,
         )
+
+    def tearDown(self):
+        cache.clear()
 
     def test_get_by_id_success(self):
         url = self.helper.getEntryByIdUrl(self.entry.ent_seq)

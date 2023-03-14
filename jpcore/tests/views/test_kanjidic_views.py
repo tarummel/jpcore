@@ -1,5 +1,6 @@
 import json as JSON
 from http import HTTPStatus
+from django.core.cache import cache
 from django.test import TestCase, Client
 
 from jpcore.models import Radical, Kanji, KDKanji, KDCodePoint, KDRadical, KDMisc,  KDVariant, KDIndex, KDQueryCode, KDReading, KDMeaning, SkipCode
@@ -101,6 +102,9 @@ class KanjiDicViewsTestCase(TestCase):
         self.manyRadKan = Kanji.objects.create(kanji = '見', strokes = 7)
         self.oneRadKan.radicals.set([self.rad2])
         self.manyRadKan.radicals.set([self.rad1, self.rad2, self.rad3])
+
+    def tearDown(self):
+        cache.clear()
 
     def test_get_by_id_success(self):
         url = self.helper.getKDKanjiByIdUrl(self.kanji.id)

@@ -4,5 +4,8 @@ django-cors-headers==3.13.0
 djangorestframework==3.14.0
 lxml==4.9.2
 psycopg2==2.9.5
+pymemcache==4.0.0
+python-decouple==3.8
 pytz==2022.7.1
+six==1.16.0
 sqlparse==0.4.3
