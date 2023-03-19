@@ -1,6 +1,7 @@
 from pathlib import Path
 from decouple import config, Csv
 
+
 ENV = config('ENV', cast=str)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -35,6 +36,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'jpcore.middleware.CSPMiddleware',
 ]
 
 CORS_ALLOWED_ORIGINS = [
