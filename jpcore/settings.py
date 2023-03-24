@@ -3,6 +3,8 @@ from decouple import config, Csv
 
 
 ENV = config('ENV', cast=str)
+IS_DEV = ENV in ['dev', 'development']
+IS_PROD = ENV in ['prod', 'production']
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -10,7 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 SECRET_KEY = config('SECRET_KEY')
-DEBUG =  False if ENV == 'prod' or ENV == 'production' else config('DEBUG', default=False, cast=bool)
+DEBUG = False if IS_PROD else config('DEBUG', default=False, cast=bool)
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='.localhost.com', cast=Csv())
 
 # Application definitions
@@ -39,9 +41,13 @@ MIDDLEWARE = [
     'jpcore.middleware.CSPMiddleware',
 ]
 
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+# SECURE_HSTS_SECONDS = 60 # default: 0s
+
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8008",
     "http://localhost:3000",
+    "https://localhost:3000",
+    "https://openkanji.com",
 ]
 
 ROOT_URLCONF = 'jpcore.urls'
@@ -80,7 +86,7 @@ DATABASES = {
 # Cache
 # https://docs.djangoproject.com/en/4.1/topics/cache/
 TEST_MEMCACHED = config('TEST_MEMCACHED', default=False, cast=bool)
-if not ENV in ['dev', 'development'] or TEST_MEMCACHED:
+if not IS_DEV or TEST_MEMCACHED:
     print('Setting Memcached backend')
     CACHES = {
         'default': {
