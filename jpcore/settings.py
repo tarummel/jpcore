@@ -13,7 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 SECRET_KEY = config('SECRET_KEY')
 DEBUG = False if IS_PROD else config('DEBUG', default=False, cast=bool)
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='.localhost.com', cast=Csv())
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='.localhost', cast=Csv())
 
 # Application definitions
 INSTALLED_APPS = [
@@ -77,7 +77,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': config('DB_NAME', default='jpcore', cast=str),
         'USER': config('DB_USER', default='postgres', cast=str),
-        'PASSWORD': config('DB_PASSWORD', default='pw', cast=str),
+        'PASSWORD': config('DB_PASSWORD', cast=str),
         'HOST': config('DB_HOST', default='localhost', cast=str),
         'PORT': config('DB_PORT', default=5432, cast=int),
     }
@@ -106,8 +106,6 @@ else:
         }
     }
 
-
-
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS = [
@@ -124,7 +122,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
