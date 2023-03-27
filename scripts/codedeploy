@@ -1,4 +1,0 @@
-#!/bin/bash
-
-rm .env
-printenv | sed 's/\([^=]*=\)\(.*\)/\1"\2"/' > .env
