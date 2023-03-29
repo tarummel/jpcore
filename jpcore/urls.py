@@ -10,7 +10,7 @@ CACHE_TIMEOUT=300
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
-    path('api/', include([
+    path('api/v1/', include([
         path('jmdict/', include([
             path('kanji/<int:id>/', cache_page(CACHE_TIMEOUT)(views.jmdict_views.getById)),
             path('kanji/<str:kanji>/', cache_page(CACHE_TIMEOUT)(views.jmdict_views.getByKanji)),

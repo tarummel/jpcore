@@ -1,7 +1,7 @@
 from jpcore.models import KDQueryCode
 
 
-API_PREFIX = '/api'
+API_PREFIX = '/api/v1'
 JM = 'jmdict'
 KD = 'kanjidic'
 KR = 'krad'
