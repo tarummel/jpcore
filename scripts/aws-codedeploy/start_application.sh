@@ -1,4 +1,7 @@
 #!/bin/bash
 
-./manage.py migrate
-./manage.py runserver
+# AWS Code Deploy 'ApplicationStart' step, see: appspec.yml
+sh scripts/start_server.sh
+
+# exit venv
+deactivate

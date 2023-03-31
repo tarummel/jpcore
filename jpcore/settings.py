@@ -41,13 +41,16 @@ MIDDLEWARE = [
     'jpcore.middleware.CSPMiddleware',
 ]
 
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 # SECURE_HSTS_SECONDS = 60 # default: 0s
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "https://localhost:3000",
+    "http://openkanji.com",
     "https://openkanji.com",
+    "http://api.openkanji.com",
+    "https://api.openkanji.com",
 ]
 
 ROOT_URLCONF = 'jpcore.urls'
