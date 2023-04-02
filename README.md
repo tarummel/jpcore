@@ -23,7 +23,7 @@ Read-only API for the JMDict EN-JP dictionary, KRAD/RADK associations, etc.
 `$ printenv | sed 's/\([^=]*=\)\(.*\)/\1"\2"/' > .env`
 5. Install [nginx](https://www.nginx.com/resources/wiki/start/topics/tutorials/install/) and configure to listen on port 443 and reroute accordingly
 6. Install and use [mkcert](https://github.com/FiloSottile/mkcert) to install a self-signed cert for nginx using [this](https://www.howtoforge.com/how-to-create-locally-trusted-ssl-certificates-with-mkcert-on-ubuntu/)
-7. Create Gunicorn socket and config nginx to use it following [this](https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-18-04#step-6-testing-gunicorn-s-ability-to-serve-the-project) guide (skipping systemctl).
+7. Create Gunicorn socket and config nginx to use it following [this](https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-18-04#step-6-testing-gunicorn-s-ability-to-serve-the-project) guide
 8. Start Gunicorn server AND detach with: \
 `$ nohup sh scripts/start_server.sh &`
 9. End venv session with: \
@@ -45,6 +45,6 @@ Read-only API for the JMDict EN-JP dictionary, KRAD/RADK associations, etc.
 - `start_server.sh`  - configured Gunicorn server start
 
 ## Acknowledgements
-- JMdict is copyright under the EDRDG licence see the [EDRDG wiki]((https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project)) for more info.
+- JMdict is copyright under the EDRDG licence see the [EDRDG wiki]((https://www.edrdg.org/wiki/index.php/)JMdict-EDICT_Dictionary_Project)) for more info.
 - KRADFILE and RADKFILE files are copyright under the [EDRDG licence](http://www.edrdg.org/edrdg/licence.html). 
 - strokeEditDistance and yehAndLiRadical CSVs are provided by Dr. Lars Yencken through his [website](https://lars.yencken.org/datasets/).
