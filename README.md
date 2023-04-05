@@ -3,11 +3,11 @@ Read-only API for the JMDict EN-JP dictionary, KRAD/RADK associations, etc.
 
 ## Running Locally
 1. Create env vars file with: \
-`$ mv .env.example .env`
+`$ cp .env.example .env`
 2. Apply migrations: \
 `$ python3 manage.py migrate`
 3. DB seed commands: \
-`$ python3 manage.py seed_jmdict | seed_krad | seed_kanjidic ]`
+`$ python3 manage.py [ seed_jmdict | seed_krad | seed_kanjidic ]`
 4. Run DEVELOPMENT server: \
 `$ python3 manage.py runserver`
 
@@ -22,7 +22,8 @@ Read-only API for the JMDict EN-JP dictionary, KRAD/RADK associations, etc.
 `$ cp .env.example .env` \
 `$ printenv | sed 's/\([^=]*=\)\(.*\)/\1"\2"/' > .env`
 5. Install [nginx](https://www.nginx.com/resources/wiki/start/topics/tutorials/install/) and configure to listen on port 443 and reroute accordingly
-6. Install and use [mkcert](https://github.com/FiloSottile/mkcert) to install a self-signed cert for nginx using [this](https://www.howtoforge.com/how-to-create-locally-trusted-ssl-certificates-with-mkcert-on-ubuntu/)
+6. Install [certbot](https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-20-04) to install necessary SSL certificates from Let's Encrypt
+    - Certbot may configure nginx automatically otherwise you'll have to do it yourself
 7. Create Gunicorn socket and config nginx to use it following [this](https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-18-04#step-6-testing-gunicorn-s-ability-to-serve-the-project) guide
 8. Start Gunicorn server AND detach with: \
 `$ nohup sh scripts/start_server.sh &`
