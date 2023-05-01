@@ -85,6 +85,14 @@ class KDKanjiSerializer(DynamicFieldsModelSerializer):
         model = models.KDKanji
         fields = ['kanji', 'codepoint', 'radical', 'misc', 'querycode', 'reading', 'meaning']
 
+# ----- KanjiDic Aux -----
+class VisualClosenessSerializer(DynamicFieldsModelSerializer):
+    # related kanji
+    kanjidic = KDKanjiSerializer(read_only = True, source = 'right')
+
+    class Meta:
+        model = models.VisualCloseness
+        fields = ['sed', 'kanjidic']
 
 # ----- JMdict -----
 class JMdictKanjiSerializer(DynamicFieldsModelSerializer):

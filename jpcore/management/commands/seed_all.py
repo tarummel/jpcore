@@ -13,4 +13,4 @@ class Command(BaseCommand):
         management.call_command("seed_kanjidic")
 
         # Kanjidic Dependency
-        # management.call_command("seed_vc")
+        management.call_command("seed_vc")

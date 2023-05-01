@@ -3,8 +3,8 @@ from django.db.models import Count, Q
 from django.http import JsonResponse
 from django.views.decorators.http import require_GET
 
-from jpcore.models import Kanji, KDKanji, SkipCode
-from jpcore.serializers import KDKanjiSerializer
+from jpcore.models import Kanji, KDKanji, SkipCode, VisualCloseness
+from jpcore.serializers import KDKanjiSerializer, VisualClosenessSerializer
 
 
 PAGE_LIMIT = 500
@@ -130,3 +130,32 @@ def getKanjiBySkipCode(request, skip):
     
     serializer = KDKanjiSerializer(queryset, many = True)
     return success(HTTPStatus.OK, serializer.data)  
+
+@require_GET
+def getVisualClosenessByKanji(request, kanji):
+    if not len(kanji) == 1:
+        return error(HTTPStatus.BAD_REQUEST)
+
+    try:
+        sensitivity = float(request.GET.get('sensitivity', 0))
+    except Exception as e:
+        return error(HTTPStatus.BAD_REQUEST, 'sensitivity must be a float value between 0.000 through 1.000')
+    
+    if sensitivity < 0 or sensitivity > 1:
+        return error(HTTPStatus.BAD_REQUEST, 'sensitivity must be between 0.000 through 1.000')
+
+    try:
+        queryset = VisualCloseness.objects.filter(sed__gte = sensitivity, left = KDKanji.objects.get(kanji = kanji))
+    except Exception as e:
+        return error(HTTPStatus.BAD_REQUEST, 'kanji not found')
+
+    if request.GET.get('simple', None):
+        output = {}
+        for query in queryset:
+            kanji, sed = query.right.kanji, query.sed
+            output[kanji] = sed
+        return success(HTTPStatus.OK, output)
+
+    serializer = VisualClosenessSerializer(queryset, many = True)
+    return success(HTTPStatus.OK, serializer.data)
+    

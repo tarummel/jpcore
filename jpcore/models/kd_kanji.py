@@ -7,6 +7,7 @@ class KDKanji(models.Model):
     kanji = models.TextField()
     
     # skipcode_set/skipcode = skip_codes reverse reference
+    # visual
 
     def __str__(self):
         return f'kanji: {self.kanji}'

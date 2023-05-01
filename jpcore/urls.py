@@ -4,7 +4,6 @@ from django.views.decorators.cache import cache_page
 
 from jpcore import views
 
-
 CACHE_TIMEOUT=300
 
 urlpatterns = [
@@ -19,6 +18,7 @@ urlpatterns = [
             path('kanji/<int:id>/', cache_page(CACHE_TIMEOUT)(views.kanjidic_views.getById)),
             path('kanji/skipcode/<str:skip>/', cache_page(CACHE_TIMEOUT)(views.kanjidic_views.getKanjiBySkipCode)),
             path('kanji/<str:kanji>/', cache_page(CACHE_TIMEOUT)(views.kanjidic_views.getByKanji)),
+            path('kanji/<str:kanji>/visualcloseness/', cache_page(CACHE_TIMEOUT)(views.kanjidic_views.getVisualClosenessByKanji)),
             path('radicals/<str:radicals>/kanji/', cache_page(CACHE_TIMEOUT)(views.kanjidic_views.getKanjiFromRadicals)),
             path('random/', views.kanjidic_views.getKanjiRandom),
         ])),

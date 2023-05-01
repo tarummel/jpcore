@@ -23,3 +23,4 @@ from .kd_meaning import KDMeaning
 
 # --- KanjiDic aux models ---
 from .skip_code import SkipCode
+from .visual_closeness import VisualCloseness
