@@ -3,7 +3,7 @@ from http import HTTPStatus
 from django.core.cache import cache
 from django.test import TestCase, Client
 
-from jpcore.models import Radical, Kanji, KDKanji, KDCodePoint, KDRadical, KDMisc,  KDVariant, KDIndex, KDQueryCode, KDReading, KDMeaning, SkipCode
+from jpcore.models import Radical, Kanji, KDKanji, KDCodePoint, KDRadical, KDMisc,  KDVariant, KDIndex, KDQueryCode, KDReading, KDMeaning, SkipCode, VisualCloseness
 from . import TestHelper
 
 
@@ -92,6 +92,16 @@ class KanjiDicViewsTestCase(TestCase):
             strokes = '7',
             frequency = '1',
             radical_names = []
+        )
+        self.vc = VisualCloseness.objects.create(
+            left = self.kanji,
+            right = self.kanji2,
+            sed = '0.900'
+        )
+        self.vcReverse = VisualCloseness.objects.create(
+            left = self.kanji2,
+            right = self.kanji,
+            sed = self.vc.sed
         )
 
         self.rad1 = Radical.objects.create(number = 12, radical = '儿', strokes = 2, meaning = 'eight', reading = 'はちがしら', frequency = 1127, notes = '')
@@ -668,3 +678,117 @@ class KanjiDicViewsTestCase(TestCase):
         url = self.helper.getKDKanjiBySkipCodeUrl(self.qcode.skip)
         response = self.client.get(url, {'main_range': -1, 'sub_range': -1})
         self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+    def test_get_visual_closeness_success(self):
+        url = self.helper.getKDKanjiByVisualCloseness(self.kanji.kanji)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+
+        json = JSON.loads(response.content)
+        self.assertEqual(json['status'], 'success')
+
+        data = json['data'][0]
+        self.assertEqual(data['sed'], self.vc.sed)
+
+        kd = data['kanjidic']
+        self.assertEqual(kd['kanji'], self.kanji2.kanji)
+
+        misc = kd['misc'][0]
+        self.assertEqual(misc['grade'], self.misc2.grade)
+        self.assertEqual(misc['jlpt'], self.misc2.jlpt)
+        self.assertEqual(misc['strokes'], self.misc2.strokes)
+        self.assertEqual(misc['frequency'], self.misc2.frequency)
+
+    def test_get_visual_closeness_sensitivity_success(self):
+        url = self.helper.getKDKanjiByVisualCloseness(self.kanji.kanji)
+        response = self.client.get(url, {'sensitivity': '0.700'})
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+
+        json = JSON.loads(response.content)
+        self.assertEqual(json['status'], 'success')
+
+        data = json['data'][0]
+        self.assertEqual(data['sed'], self.vc.sed)
+
+        kd = data['kanjidic']
+        self.assertEqual(kd['kanji'], self.kanji2.kanji)
+
+        misc = kd['misc'][0]
+        self.assertEqual(misc['grade'], self.misc2.grade)
+        self.assertEqual(misc['jlpt'], self.misc2.jlpt)
+        self.assertEqual(misc['strokes'], self.misc2.strokes)
+        self.assertEqual(misc['frequency'], self.misc2.frequency)
+
+    def test_get_visual_closeness_simple_success(self):
+        url = self.helper.getKDKanjiByVisualCloseness(self.kanji.kanji)
+        response = self.client.get(url, {'simple': 'true'})
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+
+        json = JSON.loads(response.content)
+        self.assertEqual(json['status'], 'success')
+        self.assertEqual(json['data'], {self.kanji2.kanji: self.vc.sed})
+
+    def test_get_visual_closeness_simple_sensitivity_success(self):
+        url = self.helper.getKDKanjiByVisualCloseness(self.kanji.kanji)
+        response = self.client.get(url, {'simple': 'true', 'sensitivity': '0.700'})
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+
+        json = JSON.loads(response.content)
+        self.assertEqual(json['status'], 'success')
+        self.assertEqual(json['data'], {self.kanji2.kanji: self.vc.sed})
+
+    def test_get_visual_closeness_sensitivity_too_high(self):
+        url = self.helper.getKDKanjiByVisualCloseness(self.kanji.kanji)
+        response = self.client.get(url, {'sensitivity': '0.999'})
+        self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
+
+    def test_get_visual_closeness_bad_ranges(self):
+        url = self.helper.getKDKanjiByVisualCloseness(self.kanji.kanji)
+        response = self.client.get(url, {'sensitivity': '-0.001'})
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+        url = self.helper.getKDKanjiByVisualCloseness(self.kanji.kanji)
+        response = self.client.get(url, {'sensitivity': '-1'})
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+        url = self.helper.getKDKanjiByVisualCloseness(self.kanji.kanji)
+        response = self.client.get(url, {'sensitivity': '-1000000000'})
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+        url = self.helper.getKDKanjiByVisualCloseness(self.kanji.kanji)
+        response = self.client.get(url, {'sensitivity': '1.001'})
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+        url = self.helper.getKDKanjiByVisualCloseness(self.kanji.kanji)
+        response = self.client.get(url, {'sensitivity': '2'})
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+        url = self.helper.getKDKanjiByVisualCloseness(self.kanji.kanji)
+        response = self.client.get(url, {'sensitivity': '20000000000'})
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+    def test_get_visual_closeness_bad_request(self):
+        url = self.helper.getKDKanjiByVisualCloseness('tasd')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+        url = self.helper.getKDKanjiByVisualCloseness(self.kanji.kanji)
+        response = self.client.get(url, {'sensitivity': 'whatthe'})
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+    def test_get_visual_closeness_not_found(self):
+        url = self.helper.getKDKanjiByVisualCloseness('t')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
+
+        url = self.helper.getKDKanjiByVisualCloseness('吸')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
+
+        url = self.helper.getKDKanjiByVisualCloseness('')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
+
+        url = self.helper.getKDKanjiByVisualCloseness('1')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)

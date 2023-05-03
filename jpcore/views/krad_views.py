@@ -1,5 +1,4 @@
 from http import HTTPStatus
-from django.db import connection
 from django.db.models import Count, Q
 from django.http import JsonResponse
 from django.views.decorators.http import require_GET
@@ -26,7 +25,7 @@ def error(code, reason = None):
 def list(request):
     queryset = Radical.objects.all().order_by('strokes')
     
-    if request.GET.get('simple', None):
+    if request.GET.get('simple'):
         output = {}
         for row in queryset.iterator():
             strokes, radical = row.strokes, row.radical
@@ -73,12 +72,12 @@ def getRelatedRadicals(request, radicals):
     if not len(queryset):
         return error(HTTPStatus.NOT_FOUND, 'no matching entry found')
 
-    if request.GET.get('simple', None):
+    if request.GET.get('simple'):
         output = []
         for row in queryset.iterator():
             output.append(row.radical)
 
-        if request.GET.get('invert', None):
+        if request.GET.get('invert'):
             # list comprehension to preserve order
             output = [e for e in RADICALS if e not in output and e not in split]
         return success(HTTPStatus.OK, output)

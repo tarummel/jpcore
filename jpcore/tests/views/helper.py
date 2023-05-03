@@ -38,6 +38,9 @@ class TestHelper():
     def getKDKanjiBySkipCodeUrl(self, code):
         return f'{API_PREFIX}/{KD}/kanji/skipcode/{code}/'
 
+    def getKDKanjiByVisualCloseness(self, kanji):
+        return f'{API_PREFIX}/{KD}/kanji/{kanji}/visualcloseness/'
+
     def buildKDQueryCode(self, kanji, skip = '1-1-1', ms_pos = []):
         return KDQueryCode.objects.create(
             kanji = kanji,

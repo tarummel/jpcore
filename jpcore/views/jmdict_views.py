@@ -2,7 +2,7 @@ from http import HTTPStatus
 from django.http import JsonResponse
 from django.views.decorators.http import require_GET
 
-from jpcore.models import JMdictEntry, JMdictKanji
+from jpcore.models import JMdictEntry
 from jpcore.serializers import JMdictEntrySerializer
 
 

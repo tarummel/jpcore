@@ -64,7 +64,7 @@ def getKanjiFromRadicals(request, radicals):
     if not len(queryset):
         return error(HTTPStatus.NOT_FOUND, 'no matching entries found')
 
-    if request.GET.get('simple', None):
+    if request.GET.get('simple'):
         output = {}
         for row in queryset.values_list('kanji', 'kdmisc__strokes').iterator():
             kanji, strokes = row[0], row[1]
@@ -119,7 +119,7 @@ def getKanjiBySkipCode(request, skip):
     if not len(queryset):
         return error(HTTPStatus.NOT_FOUND, 'no matching entries found')
     
-    if request.GET.get('simple', None):
+    if request.GET.get('simple'):
         output = {}
         for query in queryset:
             kanji, strokes = query.kanji, query.kdmisc.first().strokes
@@ -133,8 +133,9 @@ def getKanjiBySkipCode(request, skip):
 
 @require_GET
 def getVisualClosenessByKanji(request, kanji):
+
     if not len(kanji) == 1:
-        return error(HTTPStatus.BAD_REQUEST)
+        return error(HTTPStatus.BAD_REQUEST, 'expected one (1) kanji character')
 
     try:
         sensitivity = float(request.GET.get('sensitivity', 0))
@@ -147,9 +148,12 @@ def getVisualClosenessByKanji(request, kanji):
     try:
         queryset = VisualCloseness.objects.filter(sed__gte = sensitivity, left = KDKanji.objects.get(kanji = kanji))
     except Exception as e:
-        return error(HTTPStatus.BAD_REQUEST, 'kanji not found')
+        return error(HTTPStatus.NOT_FOUND, 'kanji not found')
 
-    if request.GET.get('simple', None):
+    if not len(queryset):
+        return error(HTTPStatus.NOT_FOUND, 'no visual closeness record found')
+
+    if request.GET.get('simple'):
         output = {}
         for query in queryset:
             kanji, sed = query.right.kanji, query.sed

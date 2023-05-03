@@ -34,4 +34,4 @@ class KDMisc(models.Model):
     radical_names = ArrayField(models.TextField(), blank = True)
 
     def __str__(self):
-        return f'grade: {self.kanji}, jlpt: {self.jlpt}, strokes: {self.strokes}, freq: {self.frequency}'
+        return f'grade: {self.grade}, jlpt: {self.jlpt}, strokes: {self.strokes}, freq: {self.frequency}'
