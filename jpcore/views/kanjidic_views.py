@@ -154,10 +154,9 @@ def getVisualClosenessByKanji(request, kanji):
         return error(HTTPStatus.NOT_FOUND, 'no visual closeness record found')
 
     if request.GET.get('simple'):
-        output = {}
+        output = []
         for query in queryset:
-            kanji, sed = query.right.kanji, query.sed
-            output[kanji] = sed
+            output.append((query.right.kanji, query.sed))
         return success(HTTPStatus.OK, output)
 
     serializer = VisualClosenessSerializer(queryset, many = True)

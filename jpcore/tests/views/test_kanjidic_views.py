@@ -726,7 +726,7 @@ class KanjiDicViewsTestCase(TestCase):
 
         json = JSON.loads(response.content)
         self.assertEqual(json['status'], 'success')
-        self.assertEqual(json['data'], {self.kanji2.kanji: self.vc.sed})
+        self.assertEqual(json['data'], [[self.kanji2.kanji, self.vc.sed]])
 
     def test_get_visual_closeness_simple_sensitivity_success(self):
         url = self.helper.getKDKanjiByVisualCloseness(self.kanji.kanji)
@@ -735,7 +735,7 @@ class KanjiDicViewsTestCase(TestCase):
 
         json = JSON.loads(response.content)
         self.assertEqual(json['status'], 'success')
-        self.assertEqual(json['data'], {self.kanji2.kanji: self.vc.sed})
+        self.assertEqual(json['data'], [[self.kanji2.kanji, self.vc.sed]])
 
     def test_get_visual_closeness_sensitivity_too_high(self):
         url = self.helper.getKDKanjiByVisualCloseness(self.kanji.kanji)
