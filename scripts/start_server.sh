@@ -1,6 +1,6 @@
 # https://docs.gunicorn.org/en/stable/settings.html#access-log-format
 gunicorn \
-    --w 2 \
+    -w 2 \
     --threads=1 \
     --bind='unix:/run/gunicorn.sock' \
     --access-logfile='/var/log/jpcore/gunicorn.log' \
