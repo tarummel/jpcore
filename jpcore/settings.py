@@ -45,8 +45,8 @@ MIDDLEWARE = [
 # SECURE_HSTS_SECONDS = 60 # default: 0s
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8008",
-    "https://localhost:8008",
+    "http://localhost:3000",
+    "https://localhost:3000",
     "http://openkanji.com",
     "https://openkanji.com",
     "http://www.openkanji.com",
