@@ -16,18 +16,14 @@ Read-only API for the JMDict EN-JP dictionary, KRAD/RADK associations, etc.
 `$ python3 -m venv venv/`
 2. Start python virtual environment with: \
 `$ source venv/bin/activate`
-3. Install dependencies with: \
-`$ python3 -m pip install -r requirements.txt`
-4. Create .env using either: \
+3. Create .env using either: \
 `$ cp .env.example .env` \
 `$ printenv | sed 's/\([^=]*=\)\(.*\)/\1"\2"/' > .env`
-5. Install [nginx](https://www.nginx.com/resources/wiki/start/topics/tutorials/install/) and configure to listen on port 443 and reroute accordingly
-6. Install [certbot](https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-20-04) to install necessary SSL certificates from Let's Encrypt
-    - Certbot may configure nginx automatically otherwise you'll have to do it yourself
-7. Create Gunicorn socket and config nginx to use it following [this](https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-18-04#step-6-testing-gunicorn-s-ability-to-serve-the-project) guide
-8. Start Gunicorn server AND detach with: \
-`$ nohup sh scripts/start_server.sh &`
-9. End venv session with: \
+4. Install dependencies with: \
+`$ python3 -m pip install -r requirements.txt`
+5. Invoke Gunicorn, pass Gunicorn config AND detach with: \
+`$ nohup ./venv/bin/gunicorn -c gunicorn/prod.py &`
+6. End venv session with: \
 `$ deactivate`
 
 ## Running Tests
@@ -43,7 +39,6 @@ Read-only API for the JMDict EN-JP dictionary, KRAD/RADK associations, etc.
 - `clear_pycache.sh` - clear all Python bytecode caches
 - `drop_tables.sh`   - destroy jpcore database
 - `dl_radinfo.sh`    - download latest copy of jpcore's "Radicals" supplmentary data file 'resources/radinfo.tsv'
-- `start_server.sh`  - configured Gunicorn server start
 
 ## Acknowledgements
 - JMdict is copyright under the EDRDG licence see the [EDRDG wiki]((https://www.edrdg.org/wiki/index.php/)JMdict-EDICT_Dictionary_Project)) for more info.
