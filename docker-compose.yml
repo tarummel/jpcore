@@ -1,0 +1,41 @@
+version: "3.9"
+
+services:
+  api:
+    hostname: api
+    build: .
+    restart: always
+    command: bash -c "python manage.py runserver 0.0.0.0:8008"
+    volumes:
+      - .:/jpcore/
+    ports:
+      - 8008:8008
+    environment:
+      - DB_HOST=psql
+    depends_on:
+      - psql
+    links:
+      - psql
+  psql:
+    hostname: psql
+    image: postgres:14.8
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=jpcore
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+  memcached:
+    hostname: memcached
+    image: memcached
+    restart: always
+    ports:
+      - "11211:11211"
+    entrypoint:
+    - memcached
+    - -m 5
+volumes:
+  postgres_data:
