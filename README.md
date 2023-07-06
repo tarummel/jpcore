@@ -16,7 +16,7 @@ Install [PostgresSQL](https://www.postgresql.org/download/)
 4. Run DEVELOPMENT server: \
 `$ python3 manage.py runserver`
 
-## Docker-Compose
+## Docker-Compose Locally
 Start/stop everything: \
 `$ docker-compose [up|down]` \
 Run a specific service: \
@@ -38,7 +38,7 @@ Clear unused content: \
 ## Scripts
 - `clear_pycache.sh` - clear all Python bytecode caches
 - `drop_tables.sh`   - destroy jpcore database
-- `dl_radinfo.sh`    - download latest copy of jpcore's "Radicals" supplmentary data file 'resources/radinfo.tsv'
+- `dl_radinfo.sh`    - download latest copy of jpcore's "Radicals" model file to 'resources/radinfo.tsv'
 
 ## Acknowledgements
 - kradfile, radkfile, JMdict_e and kanjidic2 are copyright under the [EDRDG licence](http://www.edrdg.org/edrdg/licence.html). 

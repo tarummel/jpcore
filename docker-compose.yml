@@ -5,7 +5,7 @@ services:
     hostname: api
     build: .
     restart: always
-    command: bash -c "python manage.py runserver 0.0.0.0:8008"
+    command: bash -c "gunicorn --config ./gunicorn/dev.py"
     volumes:
       - .:/jpcore/
     ports:

@@ -13,11 +13,15 @@ ENV PYTHONUNBUFFERED 1
 RUN apt -y update
 RUN apt -y install libpq-dev python3-dev cmake memcached
 
-# set project dir in docker image
+# set image's dir to project folder
 WORKDIR /jpcore
 
-# copy project from pc -> image
-COPY . .
+# seperated copy for requirements to prevent unnecessary reinstalls
+COPY requirements.txt requirements.txt
 
 # install dependencies
+# RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
+
+# copy over the rest
+COPY . .
