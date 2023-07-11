@@ -11,8 +11,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
-SECRET_KEY = config('SECRET_KEY')
-DEBUG = False if IS_PROD else config('DEBUG', default=False, cast=bool)
+SECRET_KEY = config('SECRET_KEY', cast=str)
+DEBUG = config('DEBUG', default=False, cast=bool)
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='.localhost', cast=Csv())
 
 # Application definitions
@@ -96,10 +96,10 @@ if not IS_DEV or TEST_MEMCACHED:
     CACHES = {
         'default': {
             'BACKEND': 'django.core.cache.backends.memcached.PyMemcacheCache',
-            'LOCATION': '127.0.0.1:11211',
+            'LOCATION': config('MEMCACHED_LOCATION', default='127.0.0.1', cast=str),
             'TIMEOUT': 60,
-            'MAX_ENTRIES': 300,
-            'KEY_PREFIX': config('ENV', cast=str),
+            'MAX_ENTRIES': 1000,
+            'KEY_PREFIX': ENV,
             'VERSION': 1,
         }
     }

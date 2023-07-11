@@ -1,6 +1,6 @@
 accesslog = "-"
 bind = "0.0.0.0:8008"
-capture_output = False
+capture_output = True
 enable_stdio_inheritance = True
 errorlog = "-"
 loglevel = "warn"
