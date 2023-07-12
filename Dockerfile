@@ -6,12 +6,13 @@ EXPOSE 8008
 
 # set env vars
 ENV PIP_DISABLE_PIP_VERSION_CHECK 1
+ENV PIP_ROOT_USER_ACTION=ignore
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 # install psycopg2 and memcached prereqs
-RUN apt -y update
-RUN apt -y install libpq-dev python3-dev cmake memcached
+RUN apt-get -y update
+RUN apt-get -y install libpq-dev python3-dev cmake memcached
 
 # set image's dir to project folder
 WORKDIR /jpcore
@@ -20,7 +21,7 @@ WORKDIR /jpcore
 COPY requirements.txt requirements.txt
 
 # install dependencies
-# RUN pip install --upgrade pip
+RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 # copy over the rest
