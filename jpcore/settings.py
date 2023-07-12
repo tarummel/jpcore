@@ -142,3 +142,43 @@ STATIC_URL = 'static/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Logging
+#https://docs.djangoproject.com/en/4.1/topics/logging/
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'superverbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s:%(lineno)d %(process)d %(thread)d %(message)s'
+        },
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s:%(lineno)d %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+        'formatter': 'verbose',
+    },
+    'loggers': {
+        'django.utils.autoreload': {
+            'handlers': [],
+            'level': 'ERROR',
+        },
+        'django': {
+            'level': config('DJANGO_LOG_LEVEL', default='INFO', cast=str),
+            'handlers': ['console'],
+            'propagate': True,
+        },
+    }
+}
